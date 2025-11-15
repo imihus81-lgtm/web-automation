@@ -17,7 +17,7 @@ from flask import (
 from dotenv import load_dotenv
 import stripe
 
-from brain import generate_commerce_site  # ✅ THIS MUST NOW WORK
+from brain import generate_commerce_site
 
 # ----------------------------
 # Load environment variables
@@ -29,15 +29,6 @@ STRIPE_PRICE_PRO = os.getenv("STRIPE_PRICE_PRO")
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "change-this-key")
 
 stripe.api_key = STRIPE_SECRET_KEY
-
-# Comma-separated list of hosts that should show the generator UI
-# Example on Render:
-# MAIN_HOSTS=web-automation-xxxxx.onrender.com,xaiwebsites.com,www.xaiwebsites.com
-MAIN_HOSTS = [
-    h.strip().lower()
-    for h in (os.getenv("MAIN_HOSTS") or "").split(",")
-    if h.strip()
-]
 
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY
@@ -107,15 +98,14 @@ def copy_site_to_subdomain(business_slug: str, folder_path: str):
 @app.route("/", methods=["GET"])
 def index():
     """
-    If request.host is one of MAIN_HOSTS → show the generator UI.
-    Otherwise assume it is a customer subdomain (e.g. kobesushi.xaiwebsites.com)
-    and try to serve sites/<subdomain>/home.html.
+    - If host ends with xaiwebsites.com AND is a subdomain → serve that site.
+    - Otherwise (Render URL, root xaiwebsites.com, www), show generator UI.
     """
     host = (request.host or "").split(":")[0].lower()
 
-    # If MAIN_HOSTS is configured and this host is NOT one of them → treat as live site
-    if MAIN_HOSTS and host not in MAIN_HOSTS:
-        subdomain = host.split(".")[0]  # "kobesushi" from "kobesushi.xaiwebsites.com"
+    if host.endswith("xaiwebsites.com") and host not in ("xaiwebsites.com", "www.xaiwebsites.com"):
+        # subdomain path: <slug>.xaiwebsites.com
+        subdomain = host.split(".")[0]
         site_folder = os.path.join(SITES_DIR, subdomain)
         home_path = os.path.join(site_folder, "home.html")
         if os.path.exists(home_path):
@@ -230,7 +220,12 @@ def deploy(folder):
 
 @app.route("/pricing", methods=["GET"])
 def pricing():
-    return render_template("pricing.html", is_pro=session.get("is_pro", False))
+    # simple page if you already have templates/pricing.html,
+    # otherwise you can just return text for now
+    try:
+        return render_template("pricing.html", is_pro=session.get("is_pro", False))
+    except Exception:
+        return "Pricing page not set up yet.", 200
 
 
 @app.route("/create-checkout-session", methods=["GET"])
@@ -251,12 +246,12 @@ def create_checkout_session():
 @app.route("/success", methods=["GET"])
 def success():
     session["is_pro"] = True
-    return render_template("success.html")
+    return "Pro subscription active! (You can make this a nice template later.)"
 
 
 @app.route("/cancel", methods=["GET"])
 def cancel():
-    return render_template("cancel.html")
+    return "Payment canceled."
 
 
 @app.route("/health", methods=["GET"])

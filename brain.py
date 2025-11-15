@@ -15,7 +15,7 @@ def generate_commerce_site(business, category, description, city, products):
       "home": "<html>...</html>",
       "about": "<html>...</html>",
       "services": "<html>...</html>",
-      "store": "<html>...</html>",          # can be "" if no ecommerce
+      "store": "<html>...</html>",
       "products": {
           "PRODUCT_NAME": "<html>...</html>"
       },
@@ -108,7 +108,6 @@ STYLE GUIDE
 ---------------------------------------
 - Modern layout, mobile-friendly
 - Simple CSS in <style> tag if needed
-- Use light or dark theme that looks professional
 - Use the business name and city inside the copy
 - No lorem ipsum; all real-looking text
 - All pages should be standalone HTML documents (<html>...</html>)

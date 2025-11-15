@@ -1,358 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>XAI Websites – AI Website Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
-      color: #e5e7eb;
-    }
-    a { color: inherit; text-decoration: none; }
-    .page {
-      min-height: 100vh;
-      padding: 24px 16px 40px;
-      display: flex;
-      justify-content: center;
-    }
-    .shell {
-      width: 100%;
-      max-width: 1100px;
-    }
-    header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:24px;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    header .logo {
-      font-weight:600;
-      letter-spacing:0.02em;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:18px;
-    }
-    header .logo-badge {
-      width:24px;height:24px;
-      border-radius:8px;
-      background:linear-gradient(135deg,#22c55e,#14b8a6);
-      display:flex;align-items:center;justify-content:center;
-      font-size:13px;color:#022c22;
-    }
-    header .tag {
-      font-size:12px;
-      color:#9ca3af;
-    }
-    .btn-link {
-      font-size:13px;
-      padding:8px 14px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.6);
-      background:rgba(15,23,42,0.8);
-    }
-    .main {
-      display:grid;
-      grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
-      gap:20px;
-    }
-    @media (max-width: 900px) {
-      .main { grid-template-columns:1fr; }
-    }
-    .panel {
-      background:rgba(15,23,42,0.98);
-      border-radius:18px;
-      border:1px solid rgba(148,163,184,0.5);
-      padding:20px 18px 18px;
-      box-shadow:0 24px 60px rgba(15,23,42,0.85);
-    }
-    .panel-right {
-      background:radial-gradient(circle at top left,#111827,#020617);
-    }
-    .step-label {
-      font-size:11px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      color:#9ca3af;
-      margin-bottom:6px;
-    }
-    h1 {
-      margin:0 0 6px;
-      font-size:26px;
-    }
-    .badge-green {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:4px 10px;
-      border-radius:999px;
-      background:rgba(34,197,94,0.16);
-      color:#bbf7d0;
-      font-size:11px;
-      margin-bottom:10px;
-    }
-    .subtitle {
-      margin:0 0 16px;
-      color:#9ca3af;
-      font-size:14px;
-    }
-    .field-group {
-      margin-bottom:12px;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-    .field-group label {
-      font-size:13px;
-      color:#e5e7eb;
-    }
-    .field-group small {
-      font-size:11px;
-      color:#6b7280;
-    }
-    input, select {
-      border-radius:10px;
-      border:1px solid rgba(51,65,85,0.9);
-      padding:10px 11px;
-      background:#020617;
-      color:#e5e7eb;
-      font-size:14px;
-      outline:none;
-    }
-    input:focus, select:focus {
-      border-color:#22c55e;
-      box-shadow:0 0 0 1px rgba(34,197,94,0.3);
-    }
-    .submit-btn {
-      width:100%;
-      margin-top:6px;
-      border:none;
-      border-radius:999px;
-      padding:11px 18px;
-      background:linear-gradient(135deg,#2563eb,#22c55e);
-      color:#e5e7eb;
-      font-size:15px;
-      font-weight:500;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      box-shadow:0 16px 40px rgba(37,99,235,0.65);
-    }
-    .submit-btn span.icon {
-      font-size:15px;
-    }
-    .footer-note {
-      margin-top:6px;
-      font-size:11px;
-      color:#9ca3af;
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .badge-footer {
-      font-size:11px;
-      color:#6b7280;
-    }
-    .panel-right h2 {
-      margin:0 0 10px;
-      font-size:18px;
-    }
-    .panel-right p {
-      margin:0 0 10px;
-      font-size:13px;
-      color:#9ca3af;
-    }
-    .stat-row {
-      display:flex;
-      gap:10px;
-      margin-bottom:10px;
-    }
-    .stat {
-      flex:1;
-      border-radius:12px;
-      border:1px solid rgba(55,65,81,0.9);
-      padding:10px 10px;
-      font-size:12px;
-      background:rgba(15,23,42,0.9);
-    }
-    .stat-label {
-      color:#9ca3af;
-      margin-bottom:3px;
-    }
-    .stat-value {
-      font-size:14px;
-      font-weight:600;
-    }
-    ul.bullet-list {
-      list-style:none;
-      padding:0;
-      margin:10px 0 0;
-      font-size:13px;
-    }
-    ul.bullet-list li {
-      display:flex;
-      gap:6px;
-      margin-bottom:6px;
-    }
-    .bullet-dot {
-      width:14px;height:14px;border-radius:999px;
-      background:#22c55e;color:#022c22;
-      display:flex;align-items:center;justify-content:center;
-      font-size:10px;flex-shrink:0;
-    }
-    .error {
-      margin-bottom:10px;
-      padding:8px 10px;
-      border-radius:10px;
-      background:rgba(220,38,38,0.12);
-      border:1px solid rgba(248,113,113,0.7);
-      color:#fecaca;
-      font-size:13px;
-    }
-    footer {
-      margin-top:20px;
-      font-size:11px;
-      color:#6b7280;
-      text-align:left;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>XAI Websites – Create your website in seconds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at top, #1e293b, #020617);
+            color: #e2e8f0;
+        }
+
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 26px 20px 40px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+        }
+
+        .logo {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 700;
+        }
+        .logo-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 9px;
+            background: linear-gradient(135deg,#22c55e,#2563eb);
+            display:flex;align-items:center;justify-content:center;
+            color:#0f172a;font-size:14px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.5);
+            font-size: 11px;
+            color:#e5e7eb;
+        }
+
+        h1 {
+            margin: 10px 0 6px;
+            font-size: 32px;
+            font-weight: 650;
+        }
+
+        .sub {
+            color: #94a3b8;
+            font-size: 14px;
+            max-width: 540px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 22px;
+            margin-top: 26px;
+        }
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: rgba(15,23,42,0.9);
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,0.5);
+            box-shadow: 0 24px 70px rgba(0,0,0,0.7);
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #cbd5f5;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 9px 11px;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.8);
+            color: #e5e7eb;
+            font-size: 13px;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #4f46e5;
+        }
+        textarea { min-height: 70px; resize: vertical; }
+
+        .field { margin-bottom: 12px; }
+
+        .btn-main {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg,#2563eb,#22c55e);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.4);
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        .small {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .right h2 { margin-top: 0; font-size: 17px; margin-bottom: 8px; }
+        .right ul { font-size: 13px; color: #cbd5f5; padding-left: 18px; }
+    </style>
 </head>
 <body>
-<div class="page">
-  <div class="shell">
+
+<div class="shell">
+
     <header>
-      <div>
         <div class="logo">
-          <span class="logo-badge">XA</span>
-          <span>XAI Websites</span>
+            <div class="logo-badge">XA</div>
+            <div>XAI Websites</div>
         </div>
-        <div class="tag">AI-powered website generator</div>
-      </div>
-      <a href="{{ url_for('pricing') }}" class="btn-link">View pricing</a>
+        <div class="badge">
+            🚀 Early access · AI website generator
+        </div>
     </header>
 
-    <div class="main">
-      <!-- LEFT: FORM -->
-      <section class="panel">
-        <div class="step-label">Step 1 • Business details</div>
-        <div class="badge-green">No coding • No templates</div>
-        <h1>Create your website in seconds</h1>
-        <p class="subtitle">
-          Tell us a few details about your business. Our AI will generate a full website
-          (copy, layout, and structure) tailored to your industry and city.
-        </p>
-
-        {% if error %}
-          <div class="error">{{ error }}</div>
-        {% endif %}
-
-        <form action="{{ url_for('generate') }}" method="post">
-          <div class="field-group">
-            <label for="business_name">Business name</label>
-            <input
-              id="business_name"
-              name="business_name"
-              type="text"
-              required
-              placeholder="e.g. Kobe Sushi House"
-              value="{{ business_name or '' }}"
-            >
-            <small>This will be used in your hero headline, logo text, and contact section.</small>
-          </div>
-
-          <div class="field-group">
-            <label for="industry">Industry</label>
-            <input
-              id="industry"
-              name="industry"
-              type="text"
-              required
-              placeholder="Restaurant, electrician, salon..."
-              value="{{ industry or '' }}"
-            >
-            <small>Helps AI choose the right layout & sections.</small>
-          </div>
-
-          <div class="field-group">
-            <label for="city">City</label>
-            <input
-              id="city"
-              name="city"
-              type="text"
-              required
-              placeholder="e.g. Kobe, Osaka, Tokyo"
-              value="{{ city or '' }}"
-            >
-            <small>Used for local SEO copy and contact info.</small>
-          </div>
-
-          <div class="field-group">
-            <label for="style_choice">Style (optional)</label>
-            <select id="style_choice" name="style_choice">
-              <option value="" {% if not style_choice %}selected{% endif %}>AI pick (recommended)</option>
-              <option value="basic_clean" {% if style_choice == 'basic_clean' %}selected{% endif %}>Basic – clean & simple</option>
-              <option value="pro_modern" {% if style_choice == 'pro_modern' %}selected{% endif %}>Pro – modern business</option>
-              <option value="premium_gradient" {% if style_choice == 'premium_gradient' %}selected{% endif %}>Premium – gradient hero</option>
-              <option value="ultra_dark" {% if style_choice == 'ultra_dark' %}selected{% endif %}>Ultra – luxury dark</option>
-              <option value="restaurant_premium" {% if style_choice == 'restaurant_premium' %}selected{% endif %}>Restaurant – premium layout</option>
-              <option value="realtor_premium" {% if style_choice == 'realtor_premium' %}selected{% endif %}>Real estate – premium layout</option>
-            </select>
-            <small>Leave as “AI pick” if you’re not sure. The system chooses the best style for your industry.</small>
-          </div>
-
-          <button type="submit" class="submit-btn">
-            <span class="icon">⚡</span>
-            <span>Generate my website</span>
-          </button>
-
-          <div class="footer-note">
-            <span>⏱ Under 30 seconds • ✨ Mobile-friendly HTML file</span>
-            <span class="badge-footer">© 2025 XAI Agent</span>
-          </div>
-        </form>
-      </section>
-
-      <!-- RIGHT: VALUE PANEL -->
-      <section class="panel panel-right">
-        <h2>Built for small business owners</h2>
-        <p>
-          Instead of waiting weeks for a designer, launch a clean website today.
-          Perfect for restaurants, salons, local shops, service businesses and more.
-        </p>
-
-        <div class="stat-row">
-          <div class="stat">
-            <div class="stat-label">Time to first website</div>
-            <div class="stat-value">30 seconds</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Code or design skills needed</div>
-            <div class="stat-value">0</div>
-          </div>
+    <main>
+        <div>
+            <h1>Create your website in seconds</h1>
+            <p class="sub">
+                Tell us a few details about your business. Our AI will generate a full multi-page website (Home, About, Services, Contact, and optional Store) tailored to your industry and city.
+            </p>
         </div>
 
-        <ul class="bullet-list">
-          <li><div class="bullet-dot">✓</div><span>Clean, responsive layout that works great on phones.</span></li>
-          <li><div class="bullet-dot">✓</div><span>AI-written copy tailored to your business and city.</span></li>
-          <li><div class="bullet-dot">✓</div><span>Ready to host on any provider — just upload the file.</span></li>
-          <li><div class="bullet-dot">✓</div><span>Optimized sections: hero, services, about, contact & CTA.</span></li>
-        </ul>
-      </section>
-    </div>
+        <div class="layout">
 
-    <footer>
-      Made for fast website launches. XAI Agent & XAI Websites are early access products.
-    </footer>
-  </div>
+            <!-- LEFT: FORM -->
+            <div class="card">
+                <form method="post" action="{{ url_for('generate') }}">
+
+                    <div class="field">
+                        <label>Business name</label>
+                        <input name="business" placeholder="e.g. Kobe Sushi House" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Industry / Category</label>
+                        <select name="category" required>
+                            <option value="">Choose category…</option>
+                            <option value="restaurant">Restaurant / Café</option>
+                            <option value="salon">Salon / Beauty</option>
+                            <option value="clinic">Clinic / Healthcare</option>
+                            <option value="electrician">Electrician / Trades</option>
+                            <option value="roofer">Roofer / Construction</option>
+                            <option value="ecommerce">Online store (e-commerce)</option>
+                            <option value="other">Other / Custom</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>City / Area</label>
+                        <input name="city" placeholder="e.g. Kobe, Osaka, Tokyo" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Short description</label>
+                        <textarea name="description" placeholder="Tell AI what makes this business special, services, style, target customers…"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>Products (only if e-commerce)</label>
+                        <textarea name="product_name[]"
+                                  placeholder="Optional. You can add products later in future versions. For now we’ll generate standard store sections."></textarea>
+                    </div>
+
+                    <button class="btn-main" type="submit">
+                        ⚡ Generate my website
+                    </button>
+
+                    <div class="small" style="margin-top:10px;">
+                        Under 30 seconds · Downloadable HTML ZIP · Multi-page (Home, About, Services, Contact, Store).
+                    </div>
+                </form>
+            </div>
+
+            <!-- RIGHT: INFO -->
+            <div class="card right">
+                <h2>Built for small business owners</h2>
+                <ul>
+                    <li>Clean, responsive layout that works great on phones.</li>
+                    <li>AI-written copy tailored to your business and city.</li>
+                    <li>Multi-page site: Home, About, Services, Contact, plus Store for e-commerce.</li>
+                    <li>Ready to host on any provider — just upload the files.</li>
+                    <li>Pro plan unlocks full ZIP download and 1-click live publishing.</li>
+                </ul>
+
+                <div class="pill">
+                    ⏱ Time to first website: <strong>30 seconds</strong>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
 </div>
+
 </body>
 </html>
