@@ -12,21 +12,22 @@
       background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #020617 100%);
       color: #e5e7eb;
     }
+    a { text-decoration: none; color: inherit; }
     .shell {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 16px;
+      padding: 32px 16px;
     }
     .card {
       width: 100%;
       max-width: 1100px;
-      background: rgba(15,23,42,0.95);
+      background: rgba(15,23,42,0.96);
       border-radius: 18px;
       box-shadow: 0 24px 70px rgba(15,23,42,0.9);
       border: 1px solid rgba(148,163,184,0.25);
-      padding: 28px 24px 26px;
+      padding: 24px 20px 22px;
     }
     .card-header {
       display: flex;
@@ -34,7 +35,7 @@
       justify-content: space-between;
       gap: 16px;
       align-items: center;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
     .title-block h1 {
       margin: 0;
@@ -53,7 +54,8 @@
       border-radius: 999px;
       background: rgba(34,197,94,0.12);
       color: #bbf7d0;
-      font-size: 12px;
+      font-size: 11px;
+      margin-bottom: 8px;
     }
     .buttons {
       display: flex;
@@ -65,7 +67,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 18px;
+      padding: 9px 16px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
@@ -84,12 +86,12 @@
       box-shadow: 0 14px 38px rgba(34,197,94,0.75);
     }
     .btn-ghost {
-      background: rgba(15,23,42,0.8);
+      background: rgba(15,23,42,0.9);
       color: #e5e7eb;
       border: 1px solid rgba(148,163,184,0.5);
     }
     .btn-ghost:hover {
-      background: rgba(30,64,175,0.25);
+      background: rgba(30,64,175,0.35);
     }
     .layout {
       display: grid;
@@ -108,13 +110,15 @@
       min-height: 360px;
     }
     .preview-header {
-      height: 34px;
+      height: 32px;
       background: #020617;
       border-bottom: 1px solid rgba(31,41,55,0.9);
       display: flex;
       align-items: center;
       gap: 6px;
       padding: 0 10px;
+      font-size: 11px;
+      color: #6b7280;
     }
     .preview-dot {
       width: 9px; height: 9px; border-radius: 999px;
@@ -125,7 +129,7 @@
     iframe {
       border: none;
       width: 100%;
-      height: calc(100% - 34px);
+      height: calc(100% - 32px);
       background: white;
     }
     .html-fallback {
@@ -145,7 +149,7 @@
     .side-card {
       background: radial-gradient(circle at top left,#1d283a,#020617);
       border-radius: 12px;
-      padding: 14px 14px;
+      padding: 12px 12px;
       border: 1px solid rgba(51,65,85,0.9);
       font-size: 13px;
     }
@@ -181,6 +185,12 @@
       color:#9ca3af;
       margin-top:6px;
     }
+    .share-link {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
@@ -190,7 +200,7 @@
       <div class="title-block">
         <div class="badge">✨ Website generated in under 30 seconds</div>
         <h1>Your website is ready</h1>
-        <p>Preview it below, then download the HTML file to use on any hosting service.</p>
+        <p>Preview it below, then download the HTML file or try more styles.</p>
       </div>
       <div class="buttons">
         <a href="{{ download_url }}" class="btn btn-primary">⬇ Download HTML</a>
@@ -199,11 +209,13 @@
     </div>
 
     <div class="layout">
+      <!-- LEFT: PREVIEW -->
       <div class="preview">
         <div class="preview-header">
           <div class="preview-dot red"></div>
           <div class="preview-dot yellow"></div>
           <div class="preview-dot green"></div>
+          <span style="margin-left:6px;">Live preview</span>
         </div>
 
         {% if preview_url %}
@@ -215,26 +227,35 @@
         {% endif %}
       </div>
 
+      <!-- RIGHT: NEXT STEPS -->
       <div class="side">
         <div class="side-card">
           <h3>What you can do next</h3>
           <ul class="feature-list">
-            <li><span class="feature-bullet">✓</span><span>Upload the HTML file to any hosting (xserver, Sakura, Netlify, etc.).</span></li>
-            <li><span class="feature-bullet">✓</span><span>Open in any editor if you want to change colors, logo, or text.</span></li>
-            <li><span class="feature-bullet">✓</span><span>Generate multiple versions until you find your favorite layout.</span></li>
+            <li><span class="feature-bullet">✓</span><span>Upload the HTML file to any hosting (Xserver, Sakura, Netlify, etc.).</span></li>
+            <li><span class="feature-bullet">✓</span><span>Open it in an editor if you want to change colors, logo, or text.</span></li>
+            <li><span class="feature-bullet">✓</span><span>Generate more styles (Basic, Pro, Premium, Dark) until you find your favorite.</span></li>
           </ul>
-          <div class="small">Tip: Most users generate 2–3 styles before choosing their final website.</div>
+          {% if preview_url %}
+          <div class="small">Preview link:</div>
+          <div class="share-link">{{ request.url_root.rstrip('/') }}{{ preview_url }}</div>
+          {% endif %}
         </div>
 
         <div class="side-card">
-          <h3>Upgrade to XAI Websites Pro</h3>
+          <h3>Want even better websites?</h3>
           <ul class="feature-list">
-            <li><span class="feature-bullet">★</span><span>Unlock all premium templates (gradient, luxury dark, restaurant, real estate…)</span></li>
-            <li><span class="feature-bullet">★</span><span>Unlimited regenerations & saved versions.</span></li>
-            <li><span class="feature-bullet">★</span><span>Multi-page sites (Home, About, Services, Contact).</span></li>
+            <li><span class="feature-bullet">★</span><span>Unlock all premium templates (restaurant, real estate, luxury dark…)</span></li>
+            <li><span class="feature-bullet">★</span><span>Unlimited regenerations & saved versions for all your businesses.</span></li>
+            <li><span class="feature-bullet">★</span><span>Future upgrades: multi-page sites, hosting, SEO-optimized content.</span></li>
           </ul>
-          <div class="small">You only pay monthly while you need unlimited AI-generated websites and updates.</div>
-          <a href="{{ url_for('pricing') }}" class="btn btn-primary" style="margin-top:8px;width:100%;justify-content:center;">View plans</a>
+          <div class="small">
+            Normal price <s>$29/month</s>.  
+            <strong>Launch campaign: $9.90/month for the first 50 members.</strong>
+          </div>
+          <a href="{{ url_for('pricing') }}" class="btn btn-primary" style="margin-top:8px;width:100%;justify-content:center;">
+            View plans & upgrade
+          </a>
         </div>
       </div>
     </div>

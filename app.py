@@ -6,34 +6,34 @@ from flask import (
     Flask,
     render_template,
     request,
-    redirect,
     url_for,
     send_file,
     abort,
     Response,
 )
 from dotenv import load_dotenv
-import openai
+from openai import OpenAI
 
 import brain
 
 # -----------------------------
-# ENV + OPENAI
+# ENV + OPENAI CLIENT
 # -----------------------------
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
-    raise RuntimeError("OPENAI_API_KEY is not set. Put it in .env or Render env vars.")
+    raise RuntimeError("OPENAI_API_KEY is not set. Add it to .env or Render env vars.")
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI()  # uses OPENAI_API_KEY from environment
 
 # -----------------------------
 # FLASK APP
 # -----------------------------
 app = Flask(__name__)
 
-GENERATED_DIR = "generated"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+GENERATED_DIR = os.path.join(BASE_DIR, "generated")
 os.makedirs(GENERATED_DIR, exist_ok=True)
 
 
@@ -57,13 +57,13 @@ def strip_code_fences(text: str) -> str:
     elif t.startswith("```"):
         t = t[len("```") :].lstrip()
     if t.endswith("```"):
-        t = t[: -3].rstrip()
+        t = t[:-3].rstrip()
     return t
 
 
 def generate_html_with_openai(prompt: str) -> str:
     """Call OpenAI to generate raw HTML (no markdown)."""
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
@@ -76,9 +76,9 @@ def generate_html_with_openai(prompt: str) -> str:
             },
             {"role": "user", "content": prompt},
         ],
-        temperature=0.6,
+        temperature=0.65,
     )
-    html = response["choices"][0]["message"]["content"]
+    html = response.choices[0].message.content
     return strip_code_fences(html)
 
 
@@ -105,9 +105,10 @@ def generate():
             business_name=business_name,
             industry=industry,
             city=city,
+            style_choice=style_choice,
         )
 
-    # Ask the brain to build the right prompt
+    # Ask the brain for the best template + prompt
     prompt, template_id = brain.build_prompt_for_business(
         business_name=business_name,
         industry=industry,
@@ -115,10 +116,10 @@ def generate():
         preferred_template_id=style_choice,
     )
 
-    # Generate HTML with OpenAI
+    # Generate HTML from OpenAI
     html_content = generate_html_with_openai(prompt)
 
-    # Save file for preview / download
+    # Save file for preview & download
     slug = slugify(business_name)
     unique_id = uuid.uuid4().hex[:8]
     filename = f"{slug}-{unique_id}.html"
@@ -130,8 +131,7 @@ def generate():
     preview_url = url_for("preview_site", file_id=filename)
     download_url = url_for("download_site", file_id=filename)
 
-    # Optionally you can log the template used here
-    # brain.record_template_result(template_id, success=False)
+    # (optional) later we can record success in brain.record_template_result
 
     return render_template(
         "result.html",
@@ -141,7 +141,7 @@ def generate():
     )
 
 
-@app.route("/preview/<path:file_id>")
+@app.route("/preview/<path:file_id>", methods=["GET"])
 def preview_site(file_id: str):
     safe_name = os.path.basename(file_id)
     file_path = os.path.join(GENERATED_DIR, safe_name)
@@ -153,7 +153,7 @@ def preview_site(file_id: str):
     return Response(html, mimetype="text/html")
 
 
-@app.route("/download/<path:file_id>")
+@app.route("/download/<path:file_id>", methods=["GET"])
 def download_site(file_id: str):
     safe_name = os.path.basename(file_id)
     file_path = os.path.join(GENERATED_DIR, safe_name)
@@ -168,16 +168,15 @@ def download_site(file_id: str):
     )
 
 
-@app.route("/pricing")
+@app.route("/pricing", methods=["GET"])
 def pricing():
     return render_template("pricing.html")
 
 
-@app.route("/health")
+@app.route("/health", methods=["GET"])
 def health():
     return {"status": "ok"}
 
 
 if __name__ == "__main__":
-    # For local testing
     app.run(debug=True, host="0.0.0.0", port=5000)
