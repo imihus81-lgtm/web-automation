@@ -101,13 +101,14 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.6);
             color: #e2e8f0;
             background: rgba(15,23,42,0.7);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
+            cursor: pointer;
         }
 
         iframe {
@@ -131,6 +132,8 @@
             color: #64748b;
             text-align: center;
         }
+
+        form { margin: 0; }
     </style>
 </head>
 <body>
@@ -146,25 +149,39 @@
     </header>
 
     <h1>Your Multi-Page Website Is Ready 🎉</h1>
-    <p class="sub">You can preview your Home page below. A full ZIP with all pages is available for Pro users.</p>
+    <p class="sub">Preview your Home page below. Pro users can download the full ZIP and publish it to a live subdomain.</p>
 
     <div class="grid">
 
         <!-- LEFT SIDE: ACTIONS + PREVIEW -->
         <div class="card">
-            <h2>Step 2 · Preview & Download</h2>
+            <h2>Step 2 · Preview, Download & Publish</h2>
 
             {% if is_pro %}
                 <!-- Download enabled -->
                 <a href="{{ download_url }}" class="btn-primary">⬇ Download Full Website (ZIP)</a>
                 <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again</a>
-                <p class="notice">Pro active — unlimited downloads, unlimited sites.</p>
+
+                <p class="notice">Pro active — unlimited downloads, unlimited multi-page sites.</p>
+
+                <!-- Publish button -->
+                <form method="post" action="{{ url_for('deploy', folder=folder_id) }}" style="margin-top:10px;">
+                    <input type="hidden" name="business_slug" value="{{ business_slug }}">
+                    <button type="submit" class="btn-secondary">
+                        🌐 Publish live: {{ business_slug }}.xaiwebsites.com
+                    </button>
+                </form>
+                <p class="notice">
+                    Your site will be served at this subdomain once DNS wildcard for *.xaiwebsites.com is configured.
+                </p>
 
             {% else %}
                 <!-- Upgrade CTA -->
-                <a href="{{ url_for('pricing') }}" class="btn-primary">🔓 Upgrade to Pro to Download Full Site</a>
+                <a href="{{ url_for('pricing') }}" class="btn-primary">🔓 Upgrade to Pro to Download & Publish</a>
                 <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again (Free)</a>
-                <p class="notice">Free plan allows preview only. Pro unlocks full multi-page site download.</p>
+                <p class="notice">
+                    Free plan allows preview only. Pro unlocks full multi-page ZIP download and 1-click subdomain publishing.
+                </p>
             {% endif %}
 
             <iframe src="{{ preview_url }}" title="Website Preview"></iframe>
@@ -172,29 +189,29 @@
 
         <!-- RIGHT SIDE: INFO -->
         <div class="card">
-            <h2>What’s included in your website ZIP?</h2>
+            <h2>What’s inside your website ZIP?</h2>
 
             <p class="notice">
-            Your ZIP file contains a full professional multi-page website:
+                Your ZIP file contains a complete, ready-to-host multi-page site:
             </p>
             <ul class="notice">
                 <li>home.html</li>
                 <li>about.html</li>
                 <li>services.html</li>
                 <li>contact.html</li>
-                <li>store.html (if e-commerce)</li>
-                <li>product-*.html pages</li>
+                <li>store.html (if e-commerce enabled)</li>
+                <li>product-*.html – one page per product</li>
             </ul>
 
             <p class="notice">
-                These files are ready for upload to any hosting provider, or can be deployed as subdomains next upgrade.
+                You can upload these files to any hosting provider OR publish them directly as a live subdomain under xaiwebsites.com.
             </p>
         </div>
 
     </div>
 
     <footer>
-        XAI Websites – Multi-page AI website generator · Early Access Version
+        XAI Websites – AI multi-page website generator · Early Access V4 (Subdomain Hosting)
     </footer>
 
 </div>
