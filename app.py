@@ -17,7 +17,7 @@ from flask import (
 from dotenv import load_dotenv
 import stripe
 
-from brain import generate_commerce_site
+from brain import generate_commerce_site  # ✅ THIS MUST NOW WORK
 
 # ----------------------------
 # Load environment variables
@@ -222,7 +222,6 @@ def deploy(folder):
     copy_site_to_subdomain(business_slug, src_folder)
 
     live_url = f"https://{business_slug}.xaiwebsites.com"
-    # Simple confirmation text (later we can make a fancy page)
     return (
         f"Deployed successfully! Your live site will be available at {live_url} "
         "once DNS wildcard is configured."
