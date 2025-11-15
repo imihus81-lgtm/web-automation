@@ -1,0 +1,8 @@
+email:
+  enable: true
+  sender: "yourgmail@gmail.com"
+  app_password: "xxxx xxxx xxxx xxxx"
+  recipients:
+    - "yourgmail@gmail.com"
+  subject: "Lead Report from Web Automation"
+  body: "Hi,\n\nYour lead report is attached.\n\n— XAI Agent"

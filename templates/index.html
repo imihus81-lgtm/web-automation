@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>XAI Websites – Create Your Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-accent: #020617;
+      --card: #020617;
+      --primary: #2563eb;
+      --primary-soft: rgba(37, 99, 235, 0.2);
+      --primary-hover: #1d4ed8;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.25);
+      --badge: rgba(34, 197, 94, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, #1d4ed8 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, #22c55e 0, transparent 50%),
+        var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #2563eb);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
+    }
+
+    .brand-title {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 15px;
+    }
+
+    .beta-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-muted);
+    }
+
+    .wrapper {
+      flex: 1;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 12px 16px 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr);
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .wrapper {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+        align-items: center;
+      }
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      padding: 22px 18px 20px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(18px);
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 26px 24px 24px;
+      }
+    }
+
+    .card-header {
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 26px;
+      }
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--badge);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    form {
+      margin-top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .input {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 9px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s,
+        transform 0.08s;
+    }
+
+    .input::placeholder {
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    .input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+      transform: translateY(-1px);
+      background: #020617;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .row-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .button-row {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      background: linear-gradient(90deg, #2563eb, #4f46e5);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 15px 35px rgba(37, 99, 235, 0.7);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 45px rgba(37, 99, 235, 0.9);
+      filter: brightness(1.02);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+      filter: brightness(0.97);
+    }
+
+    .btn-primary[disabled] {
+      cursor: wait;
+      opacity: 0.8;
+      box-shadow: none;
+    }
+
+    .btn-sub {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 8px 13px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sparkle {
+      font-size: 13px;
+    }
+
+    .loader-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: white;
+      opacity: 0;
+      animation: pulse 1s infinite ease-in-out;
+    }
+
+    .loader-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .loader-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: translateY(0);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    .side {
+      display: none;
+    }
+
+    @media (min-width: 900px) {
+      .side {
+        display: block;
+      }
+
+      .side-inner {
+        border-radius: 20px;
+        padding: 22px 20px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: linear-gradient(
+          145deg,
+          rgba(15, 23, 42, 0.96),
+          rgba(15, 23, 42, 0.96)
+        );
+        box-shadow:
+          0 25px 70px rgba(15, 23, 42, 1),
+          0 0 60px rgba(37, 99, 235, 0.45);
+      }
+
+      .side-title {
+        font-size: 18px;
+        margin: 0 0 6px;
+      }
+
+      .side-sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+      }
+
+      .stat-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+
+      .stat-pill {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 11px;
+        border-radius: 14px;
+        background: radial-gradient(
+          circle at 0 0,
+          rgba(34, 197, 94, 0.25),
+          rgba(15, 23, 42, 0.9)
+        );
+        border: 1px solid rgba(34, 197, 94, 0.45);
+      }
+
+      .stat-pill:nth-child(2) {
+        background: radial-gradient(
+          circle at 100% 0,
+          rgba(56, 189, 248, 0.25),
+          rgba(15, 23, 42, 0.9)
+        );
+        border-color: rgba(59, 130, 246, 0.55);
+      }
+
+      .stat-label {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .stat-value {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 3px;
+      }
+
+      .check-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .check-item {
+        font-size: 13px;
+        color: var(--text-muted);
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .check-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: rgba(34, 197, 94, 0.15);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #4ade80;
+        font-size: 11px;
+        margin-top: 2px;
+      }
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto 10px;
+      padding: 0 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top bar -->
+  <header class="nav">
+    <div class="logo-wrap">
+      <div class="logo"></div>
+      <div>
+        <div class="brand-title">XAI Websites</div>
+        <div style="font-size: 11px; color: var(--text-muted);">
+          AI-powered website generator
+        </div>
+      </div>
+    </div>
+    <div class="beta-pill">Early access</div>
+  </header>
+
+  <!-- Main content -->
+  <main class="wrapper">
+    <!-- Left: form card -->
+    <section class="card">
+      <div class="card-header">
+        <div class="eyebrow">Step 1 • Business details</div>
+        <div class="title-row">
+          <h1>Create your website in seconds</h1>
+          <span class="badge">No coding • No templates</span>
+        </div>
+        <p class="subtitle">
+          Tell us a few details about your business. Our AI will generate a
+          full website (copy, layout, and structure) tailored to your industry
+          and city.
+        </p>
+      </div>
+
+      <form method="POST">
+        <div class="field">
+          <label for="business_name">Business Name</label>
+          <input
+            id="business_name"
+            name="business_name"
+            class="input"
+            type="text"
+            placeholder="e.g. Kobe Sushi House"
+            required
+          />
+          <span class="hint">
+            This will be used in your hero headline, logo text and contact
+            section.
+          </span>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="industry">Industry</label>
+            <input
+              id="industry"
+              name="industry"
+              class="input"
+              type="text"
+              placeholder="Restaurant, electrician, salon..."
+              required
+            />
+            <span class="hint">Helps AI choose the right layout & sections.</span>
+          </div>
+
+          <div class="field">
+            <label for="city">City</label>
+            <input
+              id="city"
+              name="city"
+              class="input"
+              type="text"
+              placeholder="e.g. Kobe, Osaka, Tokyo"
+              required
+            />
+            <span class="hint">Used for local SEO copy and contact info.</span>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="submit" class="btn-primary" id="generate-btn">
+            <span class="sparkle">⚡</span>
+            <span id="btn-text">Generate my website</span>
+            <span
+              id="btn-loader"
+              style="display: none; align-items: center; gap: 4px;"
+            >
+              <span class="loader-dot"></span>
+              <span class="loader-dot"></span>
+              <span class="loader-dot"></span>
+            </span>
+          </button>
+
+          <div class="btn-sub">
+            ⏱ Under 30 seconds • ✨ Mobile-friendly HTML file
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Right: marketing / trust panel (desktop only) -->
+    <aside class="side">
+      <div class="side-inner">
+        <h2 class="side-title">Built for small business owners</h2>
+        <p class="side-sub">
+          Instead of waiting weeks for a designer, launch a clean website today.
+          Perfect for restaurants, salons, local shops, service businesses and
+          more.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat-pill">
+            <div class="stat-label">Time to first website</div>
+            <div class="stat-value">30 seconds</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Code or design skills needed</div>
+            <div class="stat-value">0</div>
+          </div>
+        </div>
+
+        <ul class="check-list">
+          <li class="check-item">
+            <div class="check-icon">✓</div>
+            <span>Clean, responsive layout that works great on phones.</span>
+          </li>
+          <li class="check-item">
+            <div class="check-icon">✓</div>
+            <span>AI-written copy tailored to your business and city.</span>
+          </li>
+          <li class="check-item">
+            <div class="check-icon">✓</div>
+            <span>Ready to host on any provider — just upload the file.</span>
+          </li>
+          <li class="check-item">
+            <div class="check-icon">✓</div>
+            <span>Optimized sections: hero, services, about, contact &amp; CTA.</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> XAI Agent</span>
+    <span>Made for fast website launches.</span>
+  </footer>
+
+  <script>
+    // Year in footer
+    document.getElementById("year").textContent =
+      new Date().getFullYear().toString();
+
+    // Simple loading state on submit
+    const form = document.querySelector("form");
+    const btn = document.getElementById("generate-btn");
+    const btnText = document.getElementById("btn-text");
+    const btnLoader = document.getElementById("btn-loader");
+
+    form.addEventListener("submit", function () {
+      btn.disabled = true;
+      btnText.textContent = "Generating your website...";
+      btnLoader.style.display = "inline-flex";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+data/
+generated/
+.env
+New Text Document.txt
+*.pyc
