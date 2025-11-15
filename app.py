@@ -28,7 +28,8 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PRICE_PRO = os.getenv("STRIPE_PRICE_PRO")
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "change-this-key")
 
-stripe.api_key = STRIPE_SECRET_KEY
+if STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY
@@ -52,14 +53,13 @@ def slugify(text: str) -> str:
 
 
 def save_multipage_site(site_json):
-    """Saves all pages from JSON and returns (folder_id, zip_path, folder_path)."""
+    """Save pages from JSON and create a ZIP. Returns (folder_id, zip_path, folder_path)."""
     folder_id = uuid.uuid4().hex
     folder_path = os.path.join(GEN_DIR, folder_id)
     os.makedirs(folder_path, exist_ok=True)
 
     for key, html in site_json.items():
         if key == "products":
-            # product pages
             for p_name, p_html in html.items():
                 safe = slugify(p_name)
                 file_path = os.path.join(folder_path, f"product-{safe}.html")
@@ -70,7 +70,6 @@ def save_multipage_site(site_json):
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(html)
 
-    # Create ZIP of the whole folder
     zip_path = os.path.join(GEN_DIR, folder_id + ".zip")
     with zipfile.ZipFile(zip_path, "w") as zipf:
         for root, dirs, files in os.walk(folder_path):
@@ -83,9 +82,8 @@ def save_multipage_site(site_json):
 
 
 def copy_site_to_subdomain(business_slug: str, folder_path: str):
-    """Copies generated multi-page site to sites/<business_slug>/ folder."""
+    """Copies generated site to sites/<business_slug>/."""
     dest_folder = os.path.join(SITES_DIR, business_slug)
-    # Overwrite if exists
     if os.path.isdir(dest_folder):
         shutil.rmtree(dest_folder)
     shutil.copytree(folder_path, dest_folder)
@@ -98,13 +96,12 @@ def copy_site_to_subdomain(business_slug: str, folder_path: str):
 @app.route("/", methods=["GET"])
 def index():
     """
-    - If host ends with xaiwebsites.com AND is a subdomain → serve that site.
-    - Otherwise (Render URL, root xaiwebsites.com, www), show generator UI.
+    If host is <slug>.xaiwebsites.com → serve that site's home.
+    Otherwise show generator UI.
     """
     host = (request.host or "").split(":")[0].lower()
 
     if host.endswith("xaiwebsites.com") and host not in ("xaiwebsites.com", "www.xaiwebsites.com"):
-        # subdomain path: <slug>.xaiwebsites.com
         subdomain = host.split(".")[0]
         site_folder = os.path.join(SITES_DIR, subdomain)
         home_path = os.path.join(site_folder, "home.html")
@@ -112,7 +109,6 @@ def index():
             return send_file(home_path, mimetype="text/html")
         return "Site not found (not deployed yet).", 404
 
-    # Otherwise show main generator UI
     return render_template("index.html")
 
 
@@ -123,14 +119,13 @@ def generate():
     description = request.form.get("description") or ""
     city = request.form.get("city") or ""
 
-    # Collect products if ecommerce
+    # Products only for future ecommerce versions – kept but optional
     products = []
     if category == "ecommerce":
         names = request.form.getlist("product_name[]")
         prices = request.form.getlist("product_price[]")
         descs = request.form.getlist("product_desc[]")
         images = request.form.getlist("product_image[]")
-
         for n, p, d, i in zip(names, prices, descs, images):
             if n.strip():
                 products.append(
@@ -142,15 +137,16 @@ def generate():
                     }
                 )
 
-    # Generate multi-page website JSON via XAI Commerce brain
-    site_json = generate_commerce_site(business, category, description, city, products)
+    try:
+        site_json = generate_commerce_site(business, category, description, city, products)
+    except Exception as e:
+        print("ERROR in /generate route:", repr(e), flush=True)
+        return "Error while generating website. Please try again later.", 500
 
     folder_id, zip_path, folder_path = save_multipage_site(site_json)
 
-    # Preview = home page inside that folder
     preview_url = url_for("preview_file", folder=folder_id, file="home.html")
     download_url = url_for("download_zip", folder=folder_id)
-
     business_slug = slugify(business)
 
     return render_template(
@@ -193,10 +189,6 @@ def download_zip(folder):
 
 @app.route("/deploy/<folder>", methods=["POST"])
 def deploy(folder):
-    """
-    Pro users can deploy a generated multi-page website to a live subdomain:
-    sites/<business_slug>/
-    """
     if not session.get("is_pro"):
         return redirect(url_for("pricing"))
 
@@ -210,18 +202,16 @@ def deploy(folder):
         abort(404)
 
     copy_site_to_subdomain(business_slug, src_folder)
-
     live_url = f"https://{business_slug}.xaiwebsites.com"
+
     return (
         f"Deployed successfully! Your live site will be available at {live_url} "
-        "once DNS wildcard is configured."
+        "once DNS wildcard for *.xaiwebsites.com is configured."
     )
 
 
 @app.route("/pricing", methods=["GET"])
 def pricing():
-    # simple page if you already have templates/pricing.html,
-    # otherwise you can just return text for now
     try:
         return render_template("pricing.html", is_pro=session.get("is_pro", False))
     except Exception:
@@ -246,7 +236,7 @@ def create_checkout_session():
 @app.route("/success", methods=["GET"])
 def success():
     session["is_pro"] = True
-    return "Pro subscription active! (You can make this a nice template later.)"
+    return "Pro subscription active! (Replace with nice template later.)"
 
 
 @app.route("/cancel", methods=["GET"])

@@ -52,6 +52,7 @@
             border: 1px solid rgba(148,163,184,0.5);
             font-size: 11px;
             color:#e5e7eb;
+            text-decoration: none;
         }
 
         h1 {
@@ -151,8 +152,13 @@
             <div class="logo-badge">XA</div>
             <div>XAI Websites</div>
         </div>
-        <div class="badge">
-            🚀 Early access · AI website generator
+        <div style="display:flex;gap:10px;align-items:center;">
+            <a class="badge" href="{{ url_for('pricing') }}">
+                💳 Pricing
+            </a>
+            <div class="badge">
+                🚀 Early access · AI website generator
+            </div>
         </div>
     </header>
 
@@ -160,7 +166,8 @@
         <div>
             <h1>Create your website in seconds</h1>
             <p class="sub">
-                Tell us a few details about your business. Our AI will generate a full multi-page website (Home, About, Services, Contact, and optional Store) tailored to your industry and city.
+                Tell us a few details about your business. Our AI will generate a full multi-page website
+                (Home, About, Services, Contact, and optional Store) tailored to your industry and city.
             </p>
         </div>
 
@@ -202,7 +209,7 @@
                     <div class="field">
                         <label>Products (only if e-commerce)</label>
                         <textarea name="product_name[]"
-                                  placeholder="Optional. You can add products later in future versions. For now we’ll generate standard store sections."></textarea>
+                                  placeholder="Optional. Future versions will support full product lists. For now we generate a standard store layout."></textarea>
                     </div>
 
                     <button class="btn-main" type="submit">
