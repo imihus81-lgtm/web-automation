@@ -7,120 +7,240 @@ DATA_DIR = "data"
 TEMPLATE_STATS_FILE = os.path.join(DATA_DIR, "template_stats.json")
 
 # ---------------------------------------------------
-# 1) TEMPLATE LIBRARY — CAN GROW AUTOMATICALLY
+# 1) TEMPLATE LIBRARY — 4 BEAUTIFUL PATTERNS
 # ---------------------------------------------------
 
 TEMPLATES = [
     {
-        "id": "modern_light",
-        "name": "Modern Light SaaS",
+        "id": "basic_clean",
+        "name": "Basic Clean",
         "weight": 1.0,
         "prompt": """
-[Modern Light Theme]
+[Template: Basic Clean]
 
-You are a professional web designer.
+You are a professional web designer and copywriter.
 
 Business name: {business_name}
 Industry: {industry}
 City: {city}
 
-Create a complete, responsive one-page website in pure HTML + CSS (NO JS).
+Create a complete, responsive one-page business website in pure HTML + CSS (NO JavaScript).
 
-Design:
-- Light mode layout
-- White background (#ffffff)
-- Soft shadows
-- Rounded sections (12–20px)
-- Blue primary (#2563eb)
-- Modern SaaS layout
+Design style:
+- Very clean and simple
+- White background (#fafafa)
+- Subtle shadows
+- Rounded cards (6px)
+- Classic body font (Arial, system font)
+- Neutral color palette (dark gray text, soft accent color)
 
-Sections:
-1. Hero with bold headline mentioning {city}
-2. About section describing {business_name}
-3. Services grid (3 or 6 cards)
-4. Testimonials (2–3 reviews)
-5. Contact block with placeholder phone/email and {city} location
-6. Footer © {business_name} {year}
+Layout:
+1) Header / Hero
+   - Business name as big heading
+   - Short tagline mentioning {industry} in {city}
+   - Centered content
 
-Rules:
-- MUST return full HTML document (<!DOCTYPE html>…)
-- All CSS must be inside <style> tag.
-- NO JS.
-- NO comments.
+2) About section
+   - Heading "About Us"
+   - 1–2 paragraphs describing what {business_name} does
+
+3) Services section
+   - Heading "Our Services"
+   - 3 or 4 service cards in a responsive flex layout
+   - Each card: title + 1 short paragraph
+
+4) Contact section
+   - Heading "Contact"
+   - Email placeholder (info@{businessname}.com style)
+   - Phone placeholder
+   - Address in {city}
+
+5) Footer
+   - Simple © {business_name} {year}
+
+Requirements:
+- Return a full HTML5 document starting with <!DOCTYPE html>.
+- Include <html>, <head>, <body>.
+- Put all CSS inside a <style> tag in the <head>.
+- Do NOT use any JavaScript or <script> tags.
+- Do NOT include comments or explanations, only the final HTML.
 """
     },
     {
-        "id": "dark_pro",
-        "name": "Dark Professional",
+        "id": "pro_modern",
+        "name": "Pro Modern",
         "weight": 1.0,
         "prompt": """
-[Dark Professional Theme]
+[Template: Pro Modern]
 
-You are a senior web designer creating a cinematic dark-mode business website.
+You are a senior web designer creating a modern, professional business website.
 
 Business name: {business_name}
 Industry: {industry}
 City: {city}
 
-Create a full, responsive one-page website in pure HTML + CSS.
+Create a full one-page website in pure HTML + CSS (NO JS).
 
-Design:
-- Dark background (#0f172a or #020617)
-- Neon blue accents (#38bdf8 or #0ea5e9)
-- Card-style sections
-- Gradient CTA buttons
-- Big bold hero section
+Design style:
+- Modern SaaS look
+- Light background (#f5f7fa)
+- Card components with soft shadows and 12px rounded corners
+- Use a modern font stack (e.g. "Inter", system fallback)
+- Strong section headings
+- Blue accent color (#2563eb) for links and buttons
 
-Sections:
-1. Cinematic hero with bold headline + CTA
-2. About: split (left text, right image placeholder)
-3. Services: Neon-bordered cards
-4. Why Choose Us (3–4 advantages)
-5. Testimonials (2–3)
-6. Contact: centered layout, using {city}
-7. Footer © {business_name} {year}
+Layout:
+1) Hero section
+   - White hero card with subtle shadow
+   - Centered headline showing {business_name}
+   - Subheadline mentioning {industry} services in {city}
+   - One primary call-to-action button (e.g. "Get a Free Quote")
 
-Rules:
-- Return full HTML5
-- All CSS in <style> tag
-- NO JS
-- NO comments
+2) About section
+   - Card with heading "About {business_name}"
+   - 1–2 paragraphs of persuasive copy
+
+3) Services section
+   - Heading "Our Services"
+   - Responsive grid (3 or 4 columns on desktop, stacked on mobile)
+   - Each service card: icon placeholder shape (CSS only), title, short description
+
+4) Testimonials section
+   - Card with 2–3 short testimonials
+
+5) Contact section
+   - Card with clear contact details:
+     - Email
+     - Phone
+     - Address in {city}
+
+6) Footer
+   - White background
+   - Small text: © {business_name} {year}
+
+Requirements:
+- Full HTML5 document, starting with <!DOCTYPE html>.
+- All CSS in a single <style> tag in the <head>.
+- Use flexbox or CSS grid for layout.
+- No JavaScript, no external CSS files.
+- No comments or extra explanations in the output.
 """
     },
     {
-        "id": "minimal_business",
-        "name": "Minimal Business",
+        "id": "premium_gradient",
+        "name": "Premium Gradient",
         "weight": 1.0,
         "prompt": """
-[Minimal Business Theme]
+[Template: Premium Gradient]
 
-You are designing a minimalist, clean business website.
+You are designing a premium, high-conversion marketing site.
 
 Business name: {business_name}
 Industry: {industry}
 City: {city}
 
-Create a full single-page HTML+CSS business website.
+Create a polished, single-page HTML + CSS website (NO JS).
 
-Design:
-- White/gray minimal style
-- Clean typography (system font)
-- Sharp edges (no rounding)
-- Black text (#111)
-- Light-gray sections (#f8f9fa)
+Design style:
+- Gradient hero background (e.g. linear-gradient(135deg,#6a11cb,#2575fc))
+- Rounded, elevated cards
+- Poppins / modern sans-serif style typography
+- White content cards on soft gray background (#f2f2f7)
+- Strong visual hierarchy
+- Clear call-to-action buttons
 
-Sections:
-1. Clean hero section
-2. About in simple single-column layout
-3. Services in 3-column grid
-4. Process / Steps section
-5. Contact with business details for {city}
-6. Footer © {business_name} {year}
+Layout:
+1) Gradient Hero
+   - Large hero with gradient background
+   - Business name as big headline
+   - Subheadline describing {industry} services in {city}
+   - Primary CTA button (e.g. "Request a Free Estimate")
+   - Secondary CTA as simple text link
 
-Rules:
-- Full HTML document only
-- All CSS inside <style>
-- NO JS, NO comments
+2) About card
+   - White card with heading "About Us"
+   - 1–2 paragraphs of persuasive, benefit-focused text
+
+3) Services grid
+   - Heading "Our Services"
+   - 3–6 cards in a responsive grid
+   - Each card: title + short description
+
+4) Process section
+   - Heading "How It Works" or "Our Process"
+   - 3–4 steps listed in a horizontal or vertical layout
+
+5) Contact card
+   - Heading "Contact Us"
+   - Email, phone, address (use {city})
+   - Optional simple contact text list (no form required)
+
+6) Footer
+   - White footer with small, muted text: © {business_name} {year}
+
+Requirements:
+- Output a complete HTML5 document with <html>, <head>, <body>.
+- Put all CSS inside a <style> tag in the head.
+- No JavaScript or external files.
+- No comments; output only the HTML.
+"""
+    },
+    {
+        "id": "ultra_dark",
+        "name": "Ultra Luxury Dark",
+        "weight": 1.0,
+        "prompt": """
+[Template: Ultra Luxury Dark]
+
+You are designing a high-end, luxury style website.
+
+Business name: {business_name}
+Industry: {industry}
+City: {city}
+
+Create a one-page HTML + CSS site in a dark, premium style (NO JS).
+
+Design style:
+- Dark background (#0c0c0c to #141414)
+- Card backgrounds (#141414 to #181818)
+- Gold accent color (#f5c542) for headlines and key elements
+- Thin, subtle borders (#333)
+- Elegant typography (modern sans-serif)
+- Generous spacing
+
+Layout:
+1) Dark hero section
+   - Full-width hero with centered content
+   - Business name in gold
+   - Subheadline in muted gray describing {industry} services in {city}
+
+2) About card
+   - Heading "About Us" in gold
+   - 1–2 paragraphs of refined text
+
+3) Services grid
+   - Heading "Our Services"
+   - 3–4 service cards in a responsive grid
+   - Each card: gold title + soft gray description
+
+4) Highlights / Why Choose Us
+   - List of 3–5 bullet-point benefits or features
+
+5) Contact section
+   - Card with heading "Contact"
+   - Email, phone, and address (use {city})
+   - Styled consistently in dark theme
+
+6) Footer
+   - Small, centered text in gray:
+     © {business_name} {year}
+
+Requirements:
+- Full HTML5 document starting with <!DOCTYPE html>.
+- All CSS in a <style> tag in the <head>.
+- No JavaScript or script tags.
+- No external CSS or JS files.
+- No comments or explanations outside the HTML.
 """
     }
 ]
@@ -156,20 +276,25 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
     stats = _load_template_stats()
     industry_lower = industry.lower()
 
-    # Niche-based preferences
+    # Niche-based preferences (you can tweak later)
     niche_boosts = {t["id"]: 0.0 for t in TEMPLATES}
 
-    if any(kw in industry_lower for kw in ["roof", "solar", "auto", "car", "garage", "construction"]):
-        niche_boosts["dark_pro"] += 3.0
+    # Trade / construction / industrial → modern or dark
+    if any(kw in industry_lower for kw in ["roof", "solar", "auto", "car", "garage", "construction", "plumbing", "electric"]):
+        niche_boosts["pro_modern"] += 1.5
+        niche_boosts["ultra_dark"] += 1.0
 
-    if any(kw in industry_lower for kw in ["restaurant", "food", "cafe", "salon", "beauty", "spa"]):
-        niche_boosts["modern_light"] += 2.0
-        niche_boosts["minimal_business"] += 1.0
+    # Consumer-facing services → gradient / pro
+    if any(kw in industry_lower for kw in ["restaurant", "food", "cafe", "salon", "beauty", "spa", "clinic", "fitness"]):
+        niche_boosts["premium_gradient"] += 2.0
+        niche_boosts["pro_modern"] += 1.0
 
-    if any(kw in industry_lower for kw in ["law", "tax", "consult", "account"]):
-        niche_boosts["minimal_business"] += 3.0
+    # Professional / corporate → basic + pro
+    if any(kw in industry_lower for kw in ["law", "tax", "consult", "account", "firm", "agency"]):
+        niche_boosts["basic_clean"] += 1.5
+        niche_boosts["pro_modern"] += 1.0
 
-    # Score templates
+    # Score templates: base weight + performance + niche_boost
     scored = []
     for t in TEMPLATES:
         tid = t["id"]
@@ -177,17 +302,17 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
         uses = s["uses"]
         success = s["success"]
 
-        # Success rate with smoothing
+        # success rate with smoothing
         success_rate = (success + 1) / (uses + 2)
 
         score = t["weight"] + niche_boosts[tid] + success_rate * 2.0
         scored.append((t, score))
 
-    # Weighted random selection
     total = sum(score for _, score in scored)
     r = random.random() * total
     running = 0.0
 
+    chosen = scored[0][0]
     for t, score in scored:
         running += score
         if r <= running:
@@ -196,6 +321,8 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
 
     # Record usage
     stats = _load_template_stats()
+    if chosen["id"] not in stats:
+        stats[chosen["id"]] = {"uses": 0, "success": 0}
     stats[chosen["id"]]["uses"] += 1
     _save_template_stats(stats)
 
@@ -209,7 +336,7 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
 def build_prompt_for_business(business_name: str, industry: str, city: str) -> Tuple[str, str]:
     chosen = choose_template(business_name, industry, city)
 
-    year = 2025  # can make dynamic if you want
+    year = 2025  # you can make this dynamic later if you like
 
     prompt = chosen["prompt"].format(
         business_name=business_name,
@@ -226,6 +353,10 @@ def build_prompt_for_business(business_name: str, industry: str, city: str) -> T
 # ---------------------------------------------------
 
 def record_template_result(template_id: str, success: bool):
+    """
+    Call this when you know the template led to a successful outcome
+    (customer paid, replied YES, etc.).
+    """
     stats = _load_template_stats()
 
     if template_id not in stats:
