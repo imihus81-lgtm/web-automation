@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pro Activated | XAI Websites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin:0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+      color:#e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+    .card {
+      background:rgba(15,23,42,0.98);
+      border-radius:18px;
+      border:1px solid rgba(34,197,94,0.7);
+      padding:24px 22px;
+      max-width:420px;
+      width:100%;
+      text-align:center;
+      box-shadow:0 24px 60px rgba(22,163,74,0.7);
+    }
+    h1 { margin:0 0 8px; font-size:22px; }
+    p { margin:4px 0; font-size:14px; color:#9ca3af; }
+    a.btn {
+      display:inline-block;
+      margin-top:14px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#22c55e,#14b8a6);
+      color:#022c22;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:500;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Pro plan activated 🎉</h1>
+  <p>Your browser is now upgraded to Pro.</p>
+  <p>You can generate and download unlimited websites.</p>
+  <a href="{{ url_for('index') }}" class="btn">Back to generator</a>
+</div>
+</body>
+</html>

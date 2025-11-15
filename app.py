@@ -10,14 +10,17 @@ from flask import (
     send_file,
     abort,
     Response,
+    redirect,
+    session,
 )
 from dotenv import load_dotenv
 from openai import OpenAI
+import stripe
 
 import brain
 
 # -----------------------------
-# ENV + OPENAI CLIENT
+# ENV + CLIENTS
 # -----------------------------
 load_dotenv()
 
@@ -27,10 +30,19 @@ if not OPENAI_API_KEY:
 
 client = OpenAI()  # uses OPENAI_API_KEY from environment
 
-# -----------------------------
-# FLASK APP
-# -----------------------------
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")  # sk_test_...
+STRIPE_PRICE_PRO = os.getenv("STRIPE_PRICE_PRO")    # price_xxx from Stripe
+
+if not STRIPE_SECRET_KEY:
+    raise RuntimeError("STRIPE_SECRET_KEY is not set. Add it to .env or Render env vars.")
+if not STRIPE_PRICE_PRO:
+    raise RuntimeError("STRIPE_PRICE_PRO is not set. Create a Price in Stripe and add it.")
+
+stripe.api_key = STRIPE_SECRET_KEY
+
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "change-me-please")
 app = Flask(__name__)
+app.secret_key = FLASK_SECRET_KEY
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 GENERATED_DIR = os.path.join(BASE_DIR, "generated")
@@ -83,7 +95,7 @@ def generate_html_with_openai(prompt: str) -> str:
 
 
 # -----------------------------
-# ROUTES
+# ROUTES – MAIN APP
 # -----------------------------
 @app.route("/", methods=["GET"])
 def index():
@@ -131,13 +143,12 @@ def generate():
     preview_url = url_for("preview_site", file_id=filename)
     download_url = url_for("download_site", file_id=filename)
 
-    # (optional) later we can record success in brain.record_template_result
-
     return render_template(
         "result.html",
         preview_url=preview_url,
         download_url=download_url,
         html_content=html_content,
+        is_pro=session.get("is_pro", False),
     )
 
 
@@ -155,6 +166,10 @@ def preview_site(file_id: str):
 
 @app.route("/download/<path:file_id>", methods=["GET"])
 def download_site(file_id: str):
+    """
+    For now, still allow everyone to download.
+    In the next step, we can restrict this for non-Pro users using session['is_pro'].
+    """
     safe_name = os.path.basename(file_id)
     file_path = os.path.join(GENERATED_DIR, safe_name)
     if not os.path.exists(file_path):
@@ -170,12 +185,55 @@ def download_site(file_id: str):
 
 @app.route("/pricing", methods=["GET"])
 def pricing():
-    return render_template("pricing.html")
+    return render_template("pricing.html", is_pro=session.get("is_pro", False))
 
 
 @app.route("/health", methods=["GET"])
 def health():
     return {"status": "ok"}
+
+
+# -----------------------------
+# STRIPE CHECKOUT (TEST MODE)
+# -----------------------------
+@app.route("/create-checkout-session", methods=["GET"])
+def create_checkout_session():
+    """
+    Creates a Stripe Checkout Session (subscription for Pro).
+    Uses test mode as long as STRIPE_SECRET_KEY is a test key.
+    """
+    domain = request.url_root.rstrip("/")
+
+    checkout_session = stripe.checkout.Session.create(
+        mode="subscription",
+        payment_method_types=["card"],
+        line_items=[
+            {
+                "price": STRIPE_PRICE_PRO,
+                "quantity": 1,
+            }
+        ],
+        success_url=domain + url_for("success") + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=domain + url_for("cancel"),
+    )
+
+    return redirect(checkout_session.url, code=303)
+
+
+@app.route("/success", methods=["GET"])
+def success():
+    """
+    Called after successful Stripe checkout.
+    For now, we simply mark this browser session as Pro.
+    Later we can verify the session_id with Stripe if needed.
+    """
+    session["is_pro"] = True
+    return render_template("success.html")
+
+
+@app.route("/cancel", methods=["GET"])
+def cancel():
+    return render_template("cancel.html")
 
 
 if __name__ == "__main__":

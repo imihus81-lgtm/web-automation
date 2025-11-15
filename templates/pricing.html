@@ -224,8 +224,8 @@
           <li><span class="check">✓</span><span>Future updates included</span></li>
         </ul>
 
-        <!-- This will later become Stripe checkout -->
-        <a href="#" class="btn-plan">Upgrade to Pro</a>
+        <!-- Stripe checkout route -->
+        <a href="{{ url_for('create_checkout_session') }}" class="btn-plan">Upgrade to Pro</a>
       </article>
 
       <!-- PREMIUM -->
