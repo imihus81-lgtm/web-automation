@@ -1,30 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Your AI Website</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>Your Website Is Ready | XAI Websites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background:#f7f7f7; }
-    .container { max-width: 900px; margin: auto; text-align: center; }
-    .buttons { margin: 20px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-    iframe { width: 100%; height: 80vh; border: 1px solid #ccc; border-radius: 8px; background: white; }
-    .btn { background:#2563eb; color:white; padding:10px 18px; border-radius:6px; text-decoration:none; font-size:14px; }
-    .btn:hover { background:#1e40af; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #020617 100%);
+      color: #e5e7eb;
+    }
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(15,23,42,0.95);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.25);
+      padding: 28px 24px 26px;
+    }
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+    .title-block h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+    .title-block p {
+      margin: 6px 0 0;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      color: #bbf7d0;
+      font-size: 12px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#22c55e,#14b8a6);
+      color: #022c22;
+      box-shadow: 0 10px 32px rgba(34,197,94,0.55);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 38px rgba(34,197,94,0.75);
+    }
+    .btn-ghost {
+      background: rgba(15,23,42,0.8);
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    .btn-ghost:hover {
+      background: rgba(30,64,175,0.25);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .preview {
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid rgba(31,41,55,0.9);
+      overflow: hidden;
+      position: relative;
+      min-height: 360px;
+    }
+    .preview-header {
+      height: 34px;
+      background: #020617;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+    }
+    .preview-dot {
+      width: 9px; height: 9px; border-radius: 999px;
+    }
+    .preview-dot.red { background:#f87171; }
+    .preview-dot.yellow { background:#facc15; }
+    .preview-dot.green { background:#22c55e; }
+    iframe {
+      border: none;
+      width: 100%;
+      height: calc(100% - 34px);
+      background: white;
+    }
+    .html-fallback {
+      padding: 14px 12px;
+      font-family: "JetBrains Mono","Fira Code",monospace;
+      font-size: 12px;
+      color:#e5e7eb;
+      white-space: pre-wrap;
+      max-height: 360px;
+      overflow:auto;
+    }
+    .side {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .side-card {
+      background: radial-gradient(circle at top left,#1d283a,#020617);
+      border-radius: 12px;
+      padding: 14px 14px;
+      border: 1px solid rgba(51,65,85,0.9);
+      font-size: 13px;
+    }
+    .side-card h3 {
+      margin:0 0 8px;
+      font-size: 15px;
+    }
+    .feature-list {
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .feature-list li {
+      margin-bottom:6px;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+    }
+    .feature-bullet {
+      width: 14px;
+      height: 14px;
+      border-radius:999px;
+      background:#22c55e;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      color:#022c22;
+      flex-shrink:0;
+    }
+    .small {
+      font-size:11px;
+      color:#9ca3af;
+      margin-top:6px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Your Website Is Ready 🎉</h2>
-    <p>Here is a live preview. Download your website below.</p>
-
-    <div class="buttons">
-      <a class="btn" href="{{ download_url }}" download>⬇ Download HTML</a>
-      <a class="btn" href="/">🔄 Generate Another</a>
+<div class="shell">
+  <div class="card">
+    <div class="card-header">
+      <div class="title-block">
+        <div class="badge">✨ Website generated in under 30 seconds</div>
+        <h1>Your website is ready</h1>
+        <p>Preview it below, then download the HTML file to use on any hosting service.</p>
+      </div>
+      <div class="buttons">
+        <a href="{{ download_url }}" class="btn btn-primary">⬇ Download HTML</a>
+        <a href="{{ url_for('index') }}" class="btn btn-ghost">＋ Generate another</a>
+      </div>
     </div>
 
-    <iframe srcdoc="{{ iframe_content | safe }}"></iframe>
+    <div class="layout">
+      <div class="preview">
+        <div class="preview-header">
+          <div class="preview-dot red"></div>
+          <div class="preview-dot yellow"></div>
+          <div class="preview-dot green"></div>
+        </div>
 
+        {% if preview_url %}
+          <iframe src="{{ preview_url }}"></iframe>
+        {% else %}
+          <div class="html-fallback">
+{{ html_content|safe }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="side">
+        <div class="side-card">
+          <h3>What you can do next</h3>
+          <ul class="feature-list">
+            <li><span class="feature-bullet">✓</span><span>Upload the HTML file to any hosting (xserver, Sakura, Netlify, etc.).</span></li>
+            <li><span class="feature-bullet">✓</span><span>Open in any editor if you want to change colors, logo, or text.</span></li>
+            <li><span class="feature-bullet">✓</span><span>Generate multiple versions until you find your favorite layout.</span></li>
+          </ul>
+          <div class="small">Tip: Most users generate 2–3 styles before choosing their final website.</div>
+        </div>
+
+        <div class="side-card">
+          <h3>Upgrade to XAI Websites Pro</h3>
+          <ul class="feature-list">
+            <li><span class="feature-bullet">★</span><span>Unlock all premium templates (gradient, luxury dark, restaurant, real estate…)</span></li>
+            <li><span class="feature-bullet">★</span><span>Unlimited regenerations & saved versions.</span></li>
+            <li><span class="feature-bullet">★</span><span>Multi-page sites (Home, About, Services, Contact).</span></li>
+          </ul>
+          <div class="small">You only pay monthly while you need unlimited AI-generated websites and updates.</div>
+          <a href="{{ url_for('pricing') }}" class="btn btn-primary" style="margin-top:8px;width:100%;justify-content:center;">View plans</a>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 </body>
 </html>

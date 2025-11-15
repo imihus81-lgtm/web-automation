@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pricing | XAI Websites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      color: #e5e7eb;
+    }
+    a { color: inherit; text-decoration: none; }
+    .shell { max-width: 1100px; margin: 0 auto; padding: 32px 16px 40px; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:28px; flex-wrap:wrap; }
+    header h1 { margin:0; font-size:26px; }
+    header p { margin:4px 0 0; color:#9ca3af; font-size:13px; }
+    .btn-outline {
+      padding: 8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      font-size:13px;
+      background:rgba(15,23,42,0.8);
+      cursor:pointer;
+    }
+    .hero {
+      margin-bottom:30px;
+    }
+    .hero h2 { margin:0 0 10px; font-size:30px; }
+    .hero p { margin:0; color:#9ca3af; max-width:480px; font-size:14px; }
+    .badge {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:3px 9px; border-radius:999px;
+      background:rgba(34,197,94,0.1); color:#bbf7d0; font-size:11px;
+      margin-bottom:10px;
+    }
+    .plans {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;
+    }
+    .plan {
+      background:rgba(15,23,42,0.98);
+      border-radius:14px;
+      border:1px solid rgba(51,65,85,0.9);
+      padding:18px 16px 18px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .plan.featured {
+      border-color:#22c55e;
+      box-shadow:0 18px 45px rgba(34,197,94,0.55);
+      transform:translateY(-2px);
+    }
+    .plan h3 { margin:0; font-size:18px; }
+    .price { font-size:24px; margin:0; }
+    .price span { font-size:13px; color:#9ca3af; }
+    .tagline { font-size:12px; color:#9ca3af; }
+    ul { list-style:none; padding:0; margin:0; font-size:13px; }
+    li { margin-bottom:6px; display:flex; gap:6px; align-items:flex-start; }
+    .check {
+      width:14px; height:14px; border-radius:999px;
+      background:#22c55e; color:#022c22;
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:10px; flex-shrink:0;
+    }
+    .btn-plan {
+      margin-top:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,#22c55e,#14b8a6);
+      color:#022c22;
+      cursor:pointer;
+      font-size:13px;
+      text-align:center;
+      text-decoration:none;
+    }
+    .btn-plan.outline {
+      background:rgba(15,23,42,0.9);
+      color:#e5e7eb;
+      border:1px solid rgba(148,163,184,0.7);
+    }
+    .faq { margin-top:28px; font-size:13px; color:#9ca3af; max-width:680px; }
+    .faq h3 { color:#e5e7eb; font-size:16px; }
+    .faq p { margin-top:4px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div>
+      <h1>XAI Websites</h1>
+      <p>Launch AI-generated websites in seconds.</p>
+    </div>
+    <a href="{{ url_for('index') }}" class="btn-outline">← Back to generator</a>
+  </header>
+
+  <section class="hero">
+    <div class="badge">Most users choose Pro</div>
+    <h2>Simple plans for small business websites</h2>
+    <p>Start free, then upgrade when you’re ready for unlimited, premium templates and multi-page sites.</p>
+  </section>
+
+  <section class="plans">
+    <!-- BASIC -->
+    <article class="plan">
+      <h3>Starter</h3>
+      <p class="price">Free<span> / forever</span></p>
+      <p class="tagline">Try the AI generator with a simple template.</p>
+      <ul>
+        <li><span class="check">✓</span><span>Generate 1 website per month</span></li>
+        <li><span class="check">✓</span><span>Basic clean template</span></li>
+        <li><span class="check">✓</span><span>Download HTML file</span></li>
+      </ul>
+      <a href="{{ url_for('index') }}" class="btn-plan outline">Try for free</a>
+    </article>
+
+    <!-- PRO -->
+    <article class="plan featured">
+      <h3>Pro</h3>
+      <p class="price">$29<span> / month</span></p>
+      <p class="tagline">Best for freelancers & small business owners.</p>
+      <ul>
+        <li><span class="check">✓</span><span>Unlimited website generations</span></li>
+        <li><span class="check">✓</span><span>Access to all core templates (Basic, Pro, Premium Gradient, Ultra Dark)</span></li>
+        <li><span class="check">✓</span><span>Save & re-download your favorite versions</span></li>
+        <li><span class="check">✓</span><span>Email support</span></li>
+      </ul>
+      <!-- change href to Stripe Checkout URL when ready -->
+      <a href="#" class="btn-plan">Continue with Pro</a>
+    </article>
+
+    <!-- PREMIUM -->
+    <article class="plan">
+      <h3>Premium</h3>
+      <p class="price">$49<span> / month</span></p>
+      <p class="tagline">For agencies and power users.</p>
+      <ul>
+        <li><span class="check">✓</span><span>Everything in Pro</span></li>
+        <li><span class="check">✓</span><span>Premium industry templates (restaurant, real estate, salon, clinic…)</span></li>
+        <li><span class="check">✓</span><span>Multi-page sites (Home, About, Services, Contact)</span></li>
+        <li><span class="check">✓</span><span>Priority support & feature previews</span></li>
+      </ul>
+      <!-- change href to Stripe Premium URL -->
+      <a href="#" class="btn-plan outline">Get Premium</a>
+    </article>
+  </section>
+
+  <section class="faq">
+    <h3>Why is this a monthly subscription?</h3>
+    <p>
+      You’re not just buying a single static template. XAI Websites gives you unlimited
+      AI-generated sites, constant design & copy improvements, new templates, and ongoing
+      hosting of the AI engine. As your business changes, you can regenerate fresh websites
+      anytime without hiring a designer again.
+    </p>
+    <p>
+      Most business owners pay hundreds of dollars for one website. With XAI Websites Pro,
+      you can create as many as you like for less than the price of one coffee per day.
+    </p>
+  </section>
+</div>
+</body>
+</html>

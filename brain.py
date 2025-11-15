@@ -1,13 +1,13 @@
 import os
 import json
+from typing import Dict, Tuple, Optional
 import random
-from typing import Dict, Tuple
 
 DATA_DIR = "data"
 TEMPLATE_STATS_FILE = os.path.join(DATA_DIR, "template_stats.json")
 
 # ---------------------------------------------------
-# 1) TEMPLATE LIBRARY — 4 BEAUTIFUL PATTERNS
+# 1) TEMPLATE LIBRARY — 6 BEAUTIFUL PATTERNS
 # ---------------------------------------------------
 
 TEMPLATES = [
@@ -23,6 +23,7 @@ You are a professional web designer and copywriter.
 Business name: {business_name}
 Industry: {industry}
 City: {city}
+Year: {year}
 
 Create a complete, responsive one-page business website in pure HTML + CSS (NO JavaScript).
 
@@ -51,7 +52,7 @@ Layout:
 
 4) Contact section
    - Heading "Contact"
-   - Email placeholder (info@{businessname}.com style)
+   - Email placeholder (info@businessname.com style)
    - Phone placeholder
    - Address in {city}
 
@@ -78,6 +79,7 @@ You are a senior web designer creating a modern, professional business website.
 Business name: {business_name}
 Industry: {industry}
 City: {city}
+Year: {year}
 
 Create a full one-page website in pure HTML + CSS (NO JS).
 
@@ -103,7 +105,7 @@ Layout:
 3) Services section
    - Heading "Our Services"
    - Responsive grid (3 or 4 columns on desktop, stacked on mobile)
-   - Each service card: icon placeholder shape (CSS only), title, short description
+   - Each service card: title, short description
 
 4) Testimonials section
    - Card with 2–3 short testimonials
@@ -138,6 +140,7 @@ You are designing a premium, high-conversion marketing site.
 Business name: {business_name}
 Industry: {industry}
 City: {city}
+Year: {year}
 
 Create a polished, single-page HTML + CSS website (NO JS).
 
@@ -168,12 +171,11 @@ Layout:
 
 4) Process section
    - Heading "How It Works" or "Our Process"
-   - 3–4 steps listed in a horizontal or vertical layout
+   - 3–4 steps listed in a clear layout
 
 5) Contact card
    - Heading "Contact Us"
    - Email, phone, address (use {city})
-   - Optional simple contact text list (no form required)
 
 6) Footer
    - White footer with small, muted text: © {business_name} {year}
@@ -197,6 +199,7 @@ You are designing a high-end, luxury style website.
 Business name: {business_name}
 Industry: {industry}
 City: {city}
+Year: {year}
 
 Create a one-page HTML + CSS site in a dark, premium style (NO JS).
 
@@ -229,7 +232,6 @@ Layout:
 5) Contact section
    - Card with heading "Contact"
    - Email, phone, and address (use {city})
-   - Styled consistently in dark theme
 
 6) Footer
    - Small, centered text in gray:
@@ -242,7 +244,87 @@ Requirements:
 - No external CSS or JS files.
 - No comments or explanations outside the HTML.
 """
-    }
+    },
+    {
+        "id": "restaurant_premium",
+        "name": "Restaurant Premium",
+        "weight": 1.0,
+        "prompt": """
+[Template: Restaurant Premium]
+
+You are designing a modern, high-conversion website for a restaurant or café.
+
+Business name: {business_name}
+Industry: {industry}
+City: {city}
+Year: {year}
+
+Create a beautiful single-page HTML + CSS website (NO JavaScript).
+
+Design:
+- Warm, appetizing colors (deep red / orange / dark slate)
+- Big hero section with restaurant name, short tagline, and "Reserve a Table" button
+- Background image placeholders using CSS (no real images required)
+- Menu section grid for 6–9 featured dishes
+- Opening hours block
+- Location map placeholder box (just styled div, no iframe)
+- Contact / reservation section
+
+Sections:
+1) Hero (name + tagline + main CTA)
+2) About (short story, chef or concept)
+3) Featured Menu (grid of items with name + 1 line description)
+4) Gallery placeholder row (3 boxes with "Photo" text)
+5) Visit Us (address in {city}, opening hours)
+6) Contact (phone and email)
+7) Footer (© {business_name} {year})
+
+Requirements:
+- Full HTML5 document with <!DOCTYPE html>.
+- All CSS inside a <style> tag in the head.
+- No JavaScript, no external CSS.
+- No comments, only HTML.
+"""
+    },
+    {
+        "id": "realtor_premium",
+        "name": "Real Estate Premium",
+        "weight": 1.0,
+        "prompt": """
+[Template: Real Estate Premium]
+
+You are designing a premium landing page for a real estate agent or agency.
+
+Business name: {business_name}
+Industry: {industry}
+City: {city}
+Year: {year}
+
+Create a polished one-page HTML + CSS site (NO JS).
+
+Design:
+- Clean, upscale look (white + dark gray + accent blue or gold)
+- Large hero with agent/agency name and "Request a Call" button
+- Property cards with highlight info
+- Neighborhood highlights section
+- Testimonials
+
+Sections:
+1) Hero: headline with {business_name}, subheadline about helping people buy/sell in {city}, CTA button.
+2) Featured Listings: 3–6 property cards (price, beds/baths, short description, "View details" placeholder link).
+3) About the Agent/Team: 1–2 paragraphs.
+4) Why Work With Us: 3–4 bullet reasons.
+5) Testimonials: 2 short quotes.
+6) Contact section: phone, email, office address in {city}.
+7) Footer: © {business_name} {year}.
+
+Requirements:
+- Full HTML5 document starting with <!DOCTYPE html>.
+- All CSS in a <style> tag.
+- No JavaScript or external files.
+- No comments; only HTML.
+"""
+    },
 ]
 
 
@@ -274,27 +356,43 @@ def _save_template_stats(stats: Dict[str, Dict]):
 
 def choose_template(business_name: str, industry: str, city: str) -> Dict:
     stats = _load_template_stats()
-    industry_lower = industry.lower()
+    industry_lower = (industry or "").lower()
 
-    # Niche-based preferences (you can tweak later)
+    # Start with neutral boost
     niche_boosts = {t["id"]: 0.0 for t in TEMPLATES}
 
-    # Trade / construction / industrial → modern or dark
-    if any(kw in industry_lower for kw in ["roof", "solar", "auto", "car", "garage", "construction", "plumbing", "electric"]):
+    # Trade / construction / auto
+    if any(
+        kw in industry_lower
+        for kw in [
+            "roof",
+            "solar",
+            "auto",
+            "car",
+            "garage",
+            "construction",
+            "plumb",
+            "electric",
+        ]
+    ):
         niche_boosts["pro_modern"] += 1.5
         niche_boosts["ultra_dark"] += 1.0
 
-    # Consumer-facing services → gradient / pro
-    if any(kw in industry_lower for kw in ["restaurant", "food", "cafe", "salon", "beauty", "spa", "clinic", "fitness"]):
-        niche_boosts["premium_gradient"] += 2.0
+    # Restaurant / food
+    if any(kw in industry_lower for kw in ["restaurant", "cafe", "café", "food", "dining", "bistro"]):
+        niche_boosts["restaurant_premium"] += 3.0
+        niche_boosts["premium_gradient"] += 1.0
+
+    # Real estate / property
+    if any(kw in industry_lower for kw in ["real estate", "realtor", "property", "estate agent", "broker"]):
+        niche_boosts["realtor_premium"] += 3.0
         niche_boosts["pro_modern"] += 1.0
 
-    # Professional / corporate → basic + pro
+    # Professional / corporate
     if any(kw in industry_lower for kw in ["law", "tax", "consult", "account", "firm", "agency"]):
         niche_boosts["basic_clean"] += 1.5
         niche_boosts["pro_modern"] += 1.0
 
-    # Score templates: base weight + performance + niche_boost
     scored = []
     for t in TEMPLATES:
         tid = t["id"]
@@ -302,7 +400,7 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
         uses = s["uses"]
         success = s["success"]
 
-        # success rate with smoothing
+        # Success rate with smoothing
         success_rate = (success + 1) / (uses + 2)
 
         score = t["weight"] + niche_boosts[tid] + success_rate * 2.0
@@ -311,8 +409,8 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
     total = sum(score for _, score in scored)
     r = random.random() * total
     running = 0.0
-
     chosen = scored[0][0]
+
     for t, score in scored:
         running += score
         if r <= running:
@@ -333,10 +431,31 @@ def choose_template(business_name: str, industry: str, city: str) -> Dict:
 # 4) MAIN FUNCTION: BUILD PROMPT
 # ---------------------------------------------------
 
-def build_prompt_for_business(business_name: str, industry: str, city: str) -> Tuple[str, str]:
-    chosen = choose_template(business_name, industry, city)
+def build_prompt_for_business(
+    business_name: str,
+    industry: str,
+    city: str,
+    preferred_template_id: Optional[str] = None,
+) -> Tuple[str, str]:
+    """
+    Returns (prompt, template_id).
+    preferred_template_id can be one of:
+      basic_clean, pro_modern, premium_gradient,
+      ultra_dark, restaurant_premium, realtor_premium
+    """
+    # If user explicitly chose a template, try to use it
+    chosen = None
+    if preferred_template_id:
+        for t in TEMPLATES:
+            if t["id"] == preferred_template_id:
+                chosen = t
+                break
 
-    year = 2025  # you can make this dynamic later if you like
+    # Otherwise let the brain choose based on stats + niche
+    if chosen is None:
+        chosen = choose_template(business_name, industry, city)
+
+    year = 2025  # simple; you can make this dynamic if you like
 
     prompt = chosen["prompt"].format(
         business_name=business_name,
@@ -349,13 +468,13 @@ def build_prompt_for_business(business_name: str, industry: str, city: str) -> T
 
 
 # ---------------------------------------------------
-# 5) OPTIONAL: RECORD SUCCESS (PAID/YES)
+# 5) OPTIONAL: RECORD SUCCESS (WHEN PAYMENT HAPPENS)
 # ---------------------------------------------------
 
 def record_template_result(template_id: str, success: bool):
     """
-    Call this when you know the template led to a successful outcome
-    (customer paid, replied YES, etc.).
+    Call this from payment webhook when a customer pays
+    and accepts the site -> success=True.
     """
     stats = _load_template_stats()
 
