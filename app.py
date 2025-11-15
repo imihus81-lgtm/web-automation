@@ -53,23 +53,29 @@ def slugify(text: str) -> str:
 
 
 def save_multipage_site(site_json):
-    """Save pages from JSON and create a ZIP. Returns (folder_id, zip_path, folder_path)."""
+    """
+    Save pages from JSON and create a ZIP.
+    Returns (folder_id, zip_path, folder_path).
+    """
     folder_id = uuid.uuid4().hex
     folder_path = os.path.join(GEN_DIR, folder_id)
     os.makedirs(folder_path, exist_ok=True)
 
     for key, html in site_json.items():
         if key == "products":
+            # Product pages
             for p_name, p_html in html.items():
                 safe = slugify(p_name)
                 file_path = os.path.join(folder_path, f"product-{safe}.html")
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.write(p_html)
         else:
+            # Normal pages: home, about, services, store, contact
             file_path = os.path.join(folder_path, f"{key}.html")
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(html)
 
+    # Create ZIP
     zip_path = os.path.join(GEN_DIR, folder_id + ".zip")
     with zipfile.ZipFile(zip_path, "w") as zipf:
         for root, dirs, files in os.walk(folder_path):
@@ -82,7 +88,9 @@ def save_multipage_site(site_json):
 
 
 def copy_site_to_subdomain(business_slug: str, folder_path: str):
-    """Copies generated site to sites/<business_slug>/."""
+    """
+    Copies generated site to sites/<business_slug>/.
+    """
     dest_folder = os.path.join(SITES_DIR, business_slug)
     if os.path.isdir(dest_folder):
         shutil.rmtree(dest_folder)
@@ -119,7 +127,7 @@ def generate():
     description = request.form.get("description") or ""
     city = request.form.get("city") or ""
 
-    # Products only for future ecommerce versions – kept but optional
+    # Products only for future ecommerce versions – optional
     products = []
     if category == "ecommerce":
         names = request.form.getlist("product_name[]")
@@ -144,6 +152,12 @@ def generate():
         return "Error while generating website. Please try again later.", 500
 
     folder_id, zip_path, folder_path = save_multipage_site(site_json)
+
+    # Debug log for Render
+    try:
+        print("Generated folder:", folder_path, "files:", os.listdir(folder_path), flush=True)
+    except Exception as e:
+        print("Could not list folder contents:", repr(e), flush=True)
 
     preview_url = url_for("preview_file", folder=folder_id, file="home.html")
     download_url = url_for("download_zip", folder=folder_id)

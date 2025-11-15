@@ -8,211 +8,179 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
-            font-family: system-ui, sans-serif;
-            background: radial-gradient(circle at top, #1e293b, #000);
-            color: #e2e8f0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at top, #020617, #020617);
+            color: #e5e7eb;
         }
-
-        .container {
-            max-width: 1150px;
-            margin: auto;
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 26px 20px 40px;
         }
-
         header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            align-items: center;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
         }
-        header .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 20px;
+        .logo {
+            display:flex;
+            gap:8px;
+            align-items:center;
+            font-weight:700;
         }
-        header .logo-badge {
-            width: 26px; height: 26px;
-            background: linear-gradient(135deg,#22c55e,#2563eb);
-            border-radius: 8px;
-            display:flex;align-items:center;justify-content:center;
-            color:#0f172a;font-size:14px;
+        .logo-badge {
+            width:28px;height:28px;border-radius:9px;
+            background:linear-gradient(135deg,#22c55e,#2563eb);
         }
-        header .home-link {
-            padding: 8px 14px;
-            border: 1px solid rgba(148,163,184,0.55);
-            border-radius: 999px;
-            text-decoration: none;
-            color: #e2e8f0;
-            font-size: 13px;
+        .badge {
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:5px 10px;
+            border-radius:999px;
+            background:rgba(15,23,42,0.9);
+            border:1px solid rgba(148,163,184,0.5);
+            font-size:11px;
         }
+        h1 { margin:10px 0 4px;font-size:26px; }
+        p.sub { margin:0 0 12px;color:#9ca3af;font-size:14px; }
 
-        h1 {
-            font-size: 30px;
-            font-weight: 600;
-            margin-bottom: 6px;
+        .layout {
+            display:grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap:18px;
         }
-        .sub {
-            color: #94a3b8;
-            margin-bottom: 22px;
-            font-size: 15px;
-        }
-
-        .grid {
-            display: grid;
-            gap: 22px;
-            grid-template-columns: 1fr 1fr;
-        }
-        @media (max-width: 920px) {
-            .grid { grid-template-columns: 1fr; }
+        @media (max-width:900px){
+            .layout { grid-template-columns:1fr; }
         }
 
         .card {
-            background: rgba(15,23,42,0.8);
-            padding: 20px;
-            border-radius: 18px;
-            border: 1px solid rgba(148,163,184,0.4);
-            box-shadow: 0 25px 55px rgba(0,0,0,0.5);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            font-size: 19px;
-            margin-bottom: 12px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: linear-gradient(135deg,#2563eb,#22c55e);
-            border-radius: 999px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.6);
-            color: #e2e8f0;
-            background: rgba(15,23,42,0.7);
-            text-decoration: none;
-            font-size: 13px;
-            cursor: pointer;
+            background:rgba(15,23,42,0.96);
+            border-radius:18px;
+            border:1px solid rgba(148,163,184,0.5);
+            box-shadow:0 22px 70px rgba(0,0,0,0.8);
+            padding:18px;
         }
 
         iframe {
-            width: 100%;
-            height: 450px;
-            border-radius: 14px;
-            border: 1px solid rgba(148,163,184,0.4);
-            background: white;
-            margin-top: 12px;
+            width:100%;
+            height:520px;
+            border-radius:13px;
+            border:1px solid rgba(148,163,184,0.4);
+            background:white;
         }
 
-        .notice {
-            font-size: 13px;
-            color: #9ca3af;
-            margin-top: 8px;
+        .btn {
+            display:inline-flex;
+            justify-content:center;
+            align-items:center;
+            gap:6px;
+            padding:10px 15px;
+            border-radius:999px;
+            border:none;
+            cursor:pointer;
+            font-size:13px;
+            font-weight:600;
+            text-decoration:none;
         }
-
-        footer {
-            margin-top: 25px;
-            font-size: 13px;
-            color: #64748b;
-            text-align: center;
+        .btn-primary {
+            background:linear-gradient(135deg,#2563eb,#22c55e);
+            color:#fff;
         }
+        .btn-ghost {
+            background:transparent;
+            color:#e5e7eb;
+            border:1px solid rgba(148,163,184,0.7);
+        }
+        .btn-disabled {
+            opacity:.45;
+            cursor:not-allowed;
+        }
+        .small { font-size:12px;color:#94a3b8; }
 
-        form { margin: 0; }
+        .pill {
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:6px 10px;
+            border-radius:999px;
+            border:1px solid rgba(148,163,184,0.35);
+            font-size:11px;
+            color:#9ca3af;
+            margin-top:10px;
+        }
+        a { color:#38bdf8;text-decoration:none; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="shell">
 
     <header>
         <div class="logo">
-            <span class="logo-badge">XA</span>
-            XAI Websites
+            <div class="logo-badge"></div>
+            <div>XAI Websites</div>
         </div>
-        <a class="home-link" href="{{ url_for('index') }}">Create Another</a>
+        <div class="badge">✅ AI just generated a live website preview</div>
     </header>
 
-    <h1>Your Multi-Page Website Is Ready 🎉</h1>
-    <p class="sub">Preview your Home page below. Pro users can download the full ZIP and publish it to a live subdomain.</p>
+    <main>
+        <h1>Your website is ready 🎉</h1>
+        <p class="sub">
+            Here is a live preview rendered directly from the HTML we generated. You can download the full ZIP
+            or, on Pro, publish it to a subdomain in one click.
+        </p>
 
-    <div class="grid">
+        <div class="layout">
+            <!-- LEFT: PREVIEW -->
+            <div class="card">
+                <iframe src="{{ preview_url }}" title="Website preview"></iframe>
+            </div>
 
-        <!-- LEFT SIDE: ACTIONS + PREVIEW -->
-        <div class="card">
-            <h2>Step 2 · Preview, Download & Publish</h2>
+            <!-- RIGHT: ACTIONS -->
+            <div class="card">
+                <h2 style="margin:0 0 8px;font-size:18px;">What you can do next</h2>
+                <p class="small" style="margin:0 0 16px;">
+                    This site is stored inside our generator as a multi-page HTML package (Home, About, Services, Contact
+                    and optional Store).
+                </p>
 
-            {% if is_pro %}
-                <!-- Download enabled -->
-                <a href="{{ download_url }}" class="btn-primary">⬇ Download Full Website (ZIP)</a>
-                <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again</a>
+                {% if is_pro %}
+                    <p class="small" style="margin-bottom:10px;">Pro is active ✅</p>
+                    <a class="btn btn-primary" href="{{ download_url }}">
+                        ⬇️ Download full ZIP
+                    </a>
 
-                <p class="notice">Pro active — unlimited downloads, unlimited multi-page sites.</p>
-
-                <!-- Publish button -->
-                <form method="post" action="{{ url_for('deploy', folder=folder_id) }}" style="margin-top:10px;">
-                    <input type="hidden" name="business_slug" value="{{ business_slug }}">
-                    <button type="submit" class="btn-secondary">
-                        🌐 Publish live: {{ business_slug }}.xaiwebsites.com
+                    <form method="post" action="{{ url_for('deploy', folder=folder_id) }}" style="margin-top:10px;">
+                        <input type="hidden" name="business_slug" value="{{ business_slug }}">
+                        <button type="submit" class="btn btn-ghost">
+                            🌐 Publish live to {{ business_slug }}.xaiwebsites.com
+                        </button>
+                    </form>
+                {% else %}
+                    <button class="btn btn-primary btn-disabled" disabled>
+                        ⬇️ Download full ZIP (Pro only)
                     </button>
-                </form>
-                <p class="notice">
-                    Your site will be served at this subdomain once DNS wildcard for *.xaiwebsites.com is configured.
+                    <p class="small" style="margin-top:8px;">
+                        Upgrade to Pro to download the complete multi-page website and publish it to a live subdomain.
+                    </p>
+                    <a class="btn btn-ghost" href="{{ url_for('pricing') }}" style="margin-top:8px;">
+                        💳 View pricing
+                    </a>
+                {% endif %}
+
+                <div class="pill">
+                    🧪 Preview only — the HTML is fully generated even if you don’t download yet.
+                </div>
+
+                <p class="small" style="margin-top:14px;">
+                    Example live URL (after publishing):<br>
+                    <code>https://{{ business_slug }}.xaiwebsites.com</code>
                 </p>
-
-            {% else %}
-                <!-- Upgrade CTA -->
-                <a href="{{ url_for('pricing') }}" class="btn-primary">🔓 Upgrade to Pro to Download & Publish</a>
-                <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again (Free)</a>
-                <p class="notice">
-                    Free plan allows preview only. Pro unlocks full multi-page ZIP download and 1-click subdomain publishing.
-                </p>
-            {% endif %}
-
-            <iframe src="{{ preview_url }}" title="Website Preview"></iframe>
+            </div>
         </div>
-
-        <!-- RIGHT SIDE: INFO -->
-        <div class="card">
-            <h2>What’s inside your website ZIP?</h2>
-
-            <p class="notice">
-                Your ZIP file contains a complete, ready-to-host multi-page site:
-            </p>
-            <ul class="notice">
-                <li>home.html</li>
-                <li>about.html</li>
-                <li>services.html</li>
-                <li>contact.html</li>
-                <li>store.html (if e-commerce enabled)</li>
-                <li>product-*.html – one page per product</li>
-            </ul>
-
-            <p class="notice">
-                You can upload these files to any hosting provider OR publish them directly as a live subdomain under xaiwebsites.com.
-            </p>
-        </div>
-
-    </div>
-
-    <footer>
-        XAI Websites – AI multi-page website generator · Early Access V4 (Subdomain Hosting)
-    </footer>
+    </main>
 
 </div>
 
