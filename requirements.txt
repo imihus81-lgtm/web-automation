@@ -4,3 +4,4 @@ requests
 openai
 jinja2
 python-dotenv
+stripe
