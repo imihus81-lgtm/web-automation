@@ -1,265 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Website Is Ready | XAI Websites</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #020617 100%);
-      color: #e5e7eb;
-    }
-    a { text-decoration: none; color: inherit; }
-    .shell {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 16px;
-    }
-    .card {
-      width: 100%;
-      max-width: 1100px;
-      background: rgba(15,23,42,0.96);
-      border-radius: 18px;
-      box-shadow: 0 24px 70px rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.25);
-      padding: 24px 20px 22px;
-    }
-    .card-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .title-block h1 {
-      margin: 0;
-      font-size: 26px;
-    }
-    .title-block p {
-      margin: 6px 0 0;
-      color: #9ca3af;
-      font-size: 14px;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(34,197,94,0.12);
-      color: #bbf7d0;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 9px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      text-decoration: none;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-      white-space: nowrap;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg,#22c55e,#14b8a6);
-      color: #022c22;
-      box-shadow: 0 10px 32px rgba(34,197,94,0.55);
-    }
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 38px rgba(34,197,94,0.75);
-    }
-    .btn-ghost {
-      background: rgba(15,23,42,0.9);
-      color: #e5e7eb;
-      border: 1px solid rgba(148,163,184,0.5);
-    }
-    .btn-ghost:hover {
-      background: rgba(30,64,175,0.35);
-    }
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr);
-      gap: 18px;
-    }
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-    }
-    .preview {
-      background: #020617;
-      border-radius: 14px;
-      border: 1px solid rgba(31,41,55,0.9);
-      overflow: hidden;
-      position: relative;
-      min-height: 360px;
-    }
-    .preview-header {
-      height: 32px;
-      background: #020617;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0 10px;
-      font-size: 11px;
-      color: #6b7280;
-    }
-    .preview-dot {
-      width: 9px; height: 9px; border-radius: 999px;
-    }
-    .preview-dot.red { background:#f87171; }
-    .preview-dot.yellow { background:#facc15; }
-    .preview-dot.green { background:#22c55e; }
-    iframe {
-      border: none;
-      width: 100%;
-      height: calc(100% - 32px);
-      background: white;
-    }
-    .html-fallback {
-      padding: 14px 12px;
-      font-family: "JetBrains Mono","Fira Code",monospace;
-      font-size: 12px;
-      color:#e5e7eb;
-      white-space: pre-wrap;
-      max-height: 360px;
-      overflow:auto;
-    }
-    .side {
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .side-card {
-      background: radial-gradient(circle at top left,#1d283a,#020617);
-      border-radius: 12px;
-      padding: 12px 12px;
-      border: 1px solid rgba(51,65,85,0.9);
-      font-size: 13px;
-    }
-    .side-card h3 {
-      margin:0 0 8px;
-      font-size: 15px;
-    }
-    .feature-list {
-      list-style:none;
-      padding:0;
-      margin:0;
-    }
-    .feature-list li {
-      margin-bottom:6px;
-      display:flex;
-      gap:6px;
-      align-items:flex-start;
-    }
-    .feature-bullet {
-      width: 14px;
-      height: 14px;
-      border-radius:999px;
-      background:#22c55e;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:10px;
-      color:#022c22;
-      flex-shrink:0;
-    }
-    .small {
-      font-size:11px;
-      color:#9ca3af;
-      margin-top:6px;
-    }
-    .share-link {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #9ca3af;
-      word-break: break-all;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Your Website Is Ready – XAI Websites</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: system-ui, sans-serif;
+            background: radial-gradient(circle at top, #1e293b, #000);
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        header .logo-badge {
+            width: 26px; height: 26px;
+            background: linear-gradient(135deg,#22c55e,#2563eb);
+            border-radius: 8px;
+            display:flex;align-items:center;justify-content:center;
+            color:#0f172a;font-size:14px;
+        }
+        header .home-link {
+            padding: 8px 14px;
+            border: 1px solid rgba(148,163,184,0.55);
+            border-radius: 999px;
+            text-decoration: none;
+            color: #e2e8f0;
+            font-size: 13px;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .sub {
+            color: #94a3b8;
+            margin-bottom: 22px;
+            font-size: 15px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 22px;
+            grid-template-columns: 1fr 1fr;
+        }
+        @media (max-width: 920px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: rgba(15,23,42,0.8);
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,0.4);
+            box-shadow: 0 25px 55px rgba(0,0,0,0.5);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg,#2563eb,#22c55e);
+            border-radius: 999px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            color: #e2e8f0;
+            background: rgba(15,23,42,0.7);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.4);
+            background: white;
+            margin-top: 12px;
+        }
+
+        .notice {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="shell">
-  <div class="card">
-    <div class="card-header">
-      <div class="title-block">
-        <div class="badge">✨ Website generated in under 30 seconds</div>
-        <h1>Your website is ready</h1>
-        <p>Preview it below, then download the HTML file or try more styles.</p>
-      </div>
-      <div class="buttons">
-        <a href="{{ download_url }}" class="btn btn-primary">⬇ Download HTML</a>
-        <a href="{{ url_for('index') }}" class="btn btn-ghost">＋ Generate another</a>
-      </div>
+
+<div class="container">
+
+    <header>
+        <div class="logo">
+            <span class="logo-badge">XA</span>
+            XAI Websites
+        </div>
+        <a class="home-link" href="{{ url_for('index') }}">Create Another</a>
+    </header>
+
+    <h1>Your Multi-Page Website Is Ready 🎉</h1>
+    <p class="sub">You can preview your Home page below. A full ZIP with all pages is available for Pro users.</p>
+
+    <div class="grid">
+
+        <!-- LEFT SIDE: ACTIONS + PREVIEW -->
+        <div class="card">
+            <h2>Step 2 · Preview & Download</h2>
+
+            {% if is_pro %}
+                <!-- Download enabled -->
+                <a href="{{ download_url }}" class="btn-primary">⬇ Download Full Website (ZIP)</a>
+                <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again</a>
+                <p class="notice">Pro active — unlimited downloads, unlimited sites.</p>
+
+            {% else %}
+                <!-- Upgrade CTA -->
+                <a href="{{ url_for('pricing') }}" class="btn-primary">🔓 Upgrade to Pro to Download Full Site</a>
+                <a href="{{ url_for('index') }}" class="btn-secondary" style="margin-left:10px;">Generate Again (Free)</a>
+                <p class="notice">Free plan allows preview only. Pro unlocks full multi-page site download.</p>
+            {% endif %}
+
+            <iframe src="{{ preview_url }}" title="Website Preview"></iframe>
+        </div>
+
+        <!-- RIGHT SIDE: INFO -->
+        <div class="card">
+            <h2>What’s included in your website ZIP?</h2>
+
+            <p class="notice">
+            Your ZIP file contains a full professional multi-page website:
+            </p>
+            <ul class="notice">
+                <li>home.html</li>
+                <li>about.html</li>
+                <li>services.html</li>
+                <li>contact.html</li>
+                <li>store.html (if e-commerce)</li>
+                <li>product-*.html pages</li>
+            </ul>
+
+            <p class="notice">
+                These files are ready for upload to any hosting provider, or can be deployed as subdomains next upgrade.
+            </p>
+        </div>
+
     </div>
 
-    <div class="layout">
-      <!-- LEFT: PREVIEW -->
-      <div class="preview">
-        <div class="preview-header">
-          <div class="preview-dot red"></div>
-          <div class="preview-dot yellow"></div>
-          <div class="preview-dot green"></div>
-          <span style="margin-left:6px;">Live preview</span>
-        </div>
+    <footer>
+        XAI Websites – Multi-page AI website generator · Early Access Version
+    </footer>
 
-        {% if preview_url %}
-          <iframe src="{{ preview_url }}"></iframe>
-        {% else %}
-          <div class="html-fallback">
-{{ html_content|safe }}
-          </div>
-        {% endif %}
-      </div>
-
-      <!-- RIGHT: NEXT STEPS -->
-      <div class="side">
-        <div class="side-card">
-          <h3>What you can do next</h3>
-          <ul class="feature-list">
-            <li><span class="feature-bullet">✓</span><span>Upload the HTML file to any hosting (Xserver, Sakura, Netlify, etc.).</span></li>
-            <li><span class="feature-bullet">✓</span><span>Open it in an editor if you want to change colors, logo, or text.</span></li>
-            <li><span class="feature-bullet">✓</span><span>Generate more styles (Basic, Pro, Premium, Dark) until you find your favorite.</span></li>
-          </ul>
-          {% if preview_url %}
-          <div class="small">Preview link:</div>
-          <div class="share-link">{{ request.url_root.rstrip('/') }}{{ preview_url }}</div>
-          {% endif %}
-        </div>
-
-        <div class="side-card">
-          <h3>Want even better websites?</h3>
-          <ul class="feature-list">
-            <li><span class="feature-bullet">★</span><span>Unlock all premium templates (restaurant, real estate, luxury dark…)</span></li>
-            <li><span class="feature-bullet">★</span><span>Unlimited regenerations & saved versions for all your businesses.</span></li>
-            <li><span class="feature-bullet">★</span><span>Future upgrades: multi-page sites, hosting, SEO-optimized content.</span></li>
-          </ul>
-          <div class="small">
-            Normal price <s>$29/month</s>.  
-            <strong>Launch campaign: $9.90/month for the first 50 members.</strong>
-          </div>
-          <a href="{{ url_for('pricing') }}" class="btn btn-primary" style="margin-top:8px;width:100%;justify-content:center;">
-            View plans & upgrade
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
+
 </body>
 </html>
