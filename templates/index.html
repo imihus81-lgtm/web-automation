@@ -87,7 +87,7 @@
             color: #6ee7b7;
         }
 
-        /* HERO + LAYOUT */
+        /* MAIN WRAPPER */
         .wrapper {
             max-width: 1120px;
             margin: 0 auto;
@@ -304,7 +304,7 @@
             color: #a5b4fc;
         }
 
-        /* RIGHT INFO PANEL */
+        /* INFO CARD */
         .info-card {
             background: rgba(15,23,42,0.95);
             border-radius: 20px;
@@ -465,7 +465,17 @@
                         <div class="field-group">
                             <label for="products">Products (optional, only if e-commerce)</label>
                             <textarea id="products" name="products" placeholder="Example: Sushi set – ¥1800; Party platter – ¥6800; Vegan menu – ¥1500;"></textarea>
-                            <div class="hint">You can leave this empty for now. We’ll still create a basic store page.</div>
+                            <div class="hint">Format: Name – Price; Name – Price; ...</div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="template_style">Template style</label>
+                            <select id="template_style" name="template_style" required>
+                                <option value="modern_neon">Modern Neon (default)</option>
+                                <option value="minimal_white">Minimal White</option>
+                                <option value="business_blue">Classic Business Blue</option>
+                                <option value="japanese_clean">Japanese Clean</option>
+                            </select>
                         </div>
 
                         <div class="checkbox-row">
@@ -487,7 +497,6 @@
 
         </section>
 
-        <!-- RIGHT INFO PANEL (MOBILE BELOW) -->
         <section class="info-card" style="margin-top:24px;">
             <div class="info-heading">What you get for each generation</div>
             <ul class="info-list">

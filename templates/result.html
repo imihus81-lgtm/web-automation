@@ -75,7 +75,7 @@
         }
 
         .headline p {
-            margin: 0;
+            margin: 4px 0;
             font-size: 14px;
             color: var(--text-soft);
         }
@@ -251,6 +251,7 @@
 
         <div class="headline">
             <h1>Your Generated Website</h1>
+            <p>Template used: <strong>{{ template_style }}</strong></p>
             <p>Below are your AI-generated pages. Copy the HTML or unlock full ZIP + instant publishing with Pro.</p>
         </div>
 
@@ -291,7 +292,7 @@
                         <div class="icon-badge">🛠</div>
                         <div>
                             <div class="card-title">Services Page</div>
-                            <div class="card-subtitle">Offerings, benefits, pricing suggestions</div>
+                            <div class="card-subtitle">Offers, benefits, pricing suggestions</div>
                         </div>
                     </div>
                     <div class="html-preview">{{ site.services | safe }}</div>
@@ -306,7 +307,7 @@
                         <div class="icon-badge">🛒</div>
                         <div>
                             <div class="card-title">Store Page</div>
-                            <div class="card-subtitle">Product grid, CTA buttons</div>
+                            <div class="card-subtitle">Product grid, CTAs</div>
                         </div>
                     </div>
                     <div class="html-preview">{{ site.store | safe }}</div>
