@@ -1,7 +1,6 @@
-flask
+Flask
 gunicorn
-requests
 openai
-jinja2
 python-dotenv
+requests
 stripe

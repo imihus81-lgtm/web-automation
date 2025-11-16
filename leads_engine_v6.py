@@ -30,7 +30,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "email_templates")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(TEMPLATES_DIR, exist_ok=True)
 
+LEADS_CSV = os.path.join(DATA_DIR, "leads.csv")
 LEADS_LOG = os.path.join(DATA_DIR, "leads_log.csv")
+DO_NOT_CONTACT_FILE = os.path.join(DATA_DIR, "do_not_contact.txt")
 
 PRICING_URL = os.getenv("PRICING_URL", "https://xaiwebsites.com/pricing")
 
@@ -90,13 +92,52 @@ def choose_smtp_account():
 
 
 # -------------------------------------------------
+# Load do-not-contact list
+# -------------------------------------------------
+def load_do_not_contact():
+    blocked = set()
+    if not os.path.exists(DO_NOT_CONTACT_FILE):
+        return blocked
+    with open(DO_NOT_CONTACT_FILE, "r", encoding="utf-8") as f:
+        for line in f:
+            email = line.strip().lower()
+            if email:
+                blocked.add(email)
+    return blocked
+
+
+# -------------------------------------------------
+# Load already-sent emails from log
+# -------------------------------------------------
+def load_already_sent_emails():
+    sent = set()
+    if not os.path.exists(LEADS_LOG):
+        return sent
+    with open(LEADS_LOG, "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        header = next(reader, None)
+        if not header:
+            return sent
+        try:
+            email_idx = header.index("email")
+        except ValueError:
+            # older logs may not have "email" header in that name
+            # fallback: assume second column is email
+            email_idx = 1
+        for row in reader:
+            if len(row) <= email_idx:
+                continue
+            email = (row[email_idx] or "").strip().lower()
+            if email:
+                sent.add(email)
+    return sent
+
+
+# -------------------------------------------------
 # Load email templates & select random one
 # -------------------------------------------------
 def load_template():
-    files = [
-        f for f in os.listdir(TEMPLATES_DIR)
-        if f.endswith(".html")
-    ]
+    files = [f for f in os.listdir(TEMPLATES_DIR) if f.endswith(".html")]
     if not files:
         raise Exception("❌ No email templates found in email_templates/")
     filename = random.choice(files)
@@ -136,40 +177,93 @@ def send_email(to_email, subject, html):
 
 
 # -------------------------------------------------
-# Generate business lead dynamically (V6 brain)
+# REAL LEADS: load from CSV if present
 # -------------------------------------------------
-def generate_lead():
-    niche = choose_best_niche()
-    country = choose_best_country()
+def load_leads_from_csv(max_leads=None, skip_emails=None):
+    """
+    Reads data/leads.csv if it exists.
+    Expected header: business_name,industry,city,email
+    Returns a list of dicts, skipping emails in skip_emails.
+    """
+    if not os.path.exists(LEADS_CSV):
+        return []
 
-    business_names = [
-        f"{country} {niche.capitalize()} Solutions",
-        f"{niche.capitalize()} Experts {country}",
-        f"{country} Premium {niche.capitalize()}",
-        f"{niche.capitalize()} Masters {country}",
-        f"{country} Elite {niche.capitalize()}",
-    ]
+    skip_emails = skip_emails or set()
+    leads = []
 
-    business_name = random.choice(business_names)
-    city = "Global"
+    with open(LEADS_CSV, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            business = (row.get("business_name") or "").strip()
+            email = (row.get("email") or "").strip()
+            if not business or not email:
+                continue
 
-    # placeholder email until real lead CSV / scraper
-    email = f"info@{slugify(business_name)}.com"
+            email_lower = email.lower()
+            if email_lower in skip_emails:
+                print(f"⏭ Skipping {email} (already sent or do-not-contact).")
+                continue
 
+            lead = {
+                "business": business,
+                "niche": (row.get("industry") or "").strip() or choose_best_niche(),
+                "city": (row.get("city") or "").strip() or "Global",
+                "country": choose_best_country(),
+                "email": email,
+            }
+            leads.append(lead)
+            if max_leads and len(leads) >= max_leads:
+                break
+    return leads
+
+
+# -------------------------------------------------
+# FALLBACK LEADS: brain-generated placeholders
+# -------------------------------------------------
+def generate_lead(skip_emails=None):
+    skip_emails = skip_emails or set()
+
+    # Try a few times to avoid duplicate fake emails
+    for _ in range(10):
+        niche = choose_best_niche()
+        country = choose_best_country()
+
+        business_names = [
+            f"{country} {niche.capitalize()} Solutions",
+            f"{niche.capitalize()} Experts {country}",
+            f"{country} Premium {niche.capitalize()}",
+            f"{niche.capitalize()} Masters {country}",
+            f"{country} Elite {niche.capitalize()}",
+        ]
+
+        business_name = random.choice(business_names)
+        city = "Global"
+        email = f"info@{slugify(business_name)}.com"
+        email_lower = email.lower()
+        if email_lower not in skip_emails:
+            return {
+                "business": business_name,
+                "niche": niche,
+                "country": country,
+                "city": city,
+                "email": email,
+            }
+
+    # Fallback if all attempts hit skip list
     return {
-        "business": business_name,
-        "niche": niche,
-        "country": country,
-        "city": city,
-        "email": email,
+        "business": "Global Demo Business",
+        "niche": "general",
+        "country": "Global",
+        "city": "Global",
+        "email": f"info-demo-{random.randint(1000,9999)}@example.com",
     }
 
 
 # -------------------------------------------------
-# MAIN ENGINE (V6: with rotation + brain)
+# MAIN ENGINE (V7.1 – CSV + rotation + brain + safety)
 # -------------------------------------------------
 def run_engine(batch_size=3):
-    print("\n🚀 Starting Global AI Leads Engine (V6 – rotation enabled)")
+    print("\n🚀 Starting Global AI Leads Engine (V7.1 – CSV + rotation + safety)")
 
     # Ensure log file initialized
     if not os.path.exists(LEADS_LOG):
@@ -186,17 +280,42 @@ def run_engine(batch_size=3):
                     "country",
                     "email_status",
                     "sender",
+                    "source",
                 ]
             )
 
-    for _ in range(batch_size):
-        lead = generate_lead()
+    # Safety: load already sent + do-not-contact
+    dnc = load_do_not_contact()
+    already_sent = load_already_sent_emails()
+    skip_emails = dnc.union(already_sent)
 
+    if dnc:
+        print(f"🔒 Do-not-contact entries loaded: {len(dnc)}")
+    if already_sent:
+        print(f"📜 Emails already sent (from log): {len(already_sent)}")
+
+    # 1) Try to load real leads from CSV, skipping blocked emails
+    csv_leads = load_leads_from_csv(max_leads=batch_size, skip_emails=skip_emails)
+    use_csv = len(csv_leads) > 0
+
+    if use_csv:
+        print(f"📂 Using {len(csv_leads)} lead(s) from data/leads.csv")
+        leads_to_process = csv_leads
+    else:
+        print("ℹ️ No suitable CSV leads found, using brain-generated leads")
+        leads_to_process = [generate_lead(skip_emails=skip_emails) for _ in range(batch_size)]
+
+    for lead in leads_to_process:
         business = lead["business"]
         niche = lead["niche"]
         country = lead["country"]
         city = lead["city"]
         email = lead["email"]
+
+        email_lower = email.lower()
+        if email_lower in skip_emails:
+            print(f"⏭ Skipping {email} (blocked mid-loop).")
+            continue
 
         slug = slugify(business)
 
@@ -233,10 +352,12 @@ def run_engine(batch_size=3):
         )
 
         # 7) Send email (rotation)
-        # Choose account again just for logging
-        account_for_log = SMTP_ACCOUNTS[ (SEND_INDEX - 1) % len(SMTP_ACCOUNTS) ] if SMTP_ACCOUNTS else {"sender": "unknown"}
         email_status = send_email(email, subject, html)
-        sender_used = account_for_log.get("sender", "unknown")
+        sender_used = (
+            SMTP_ACCOUNTS[(SEND_INDEX - 1) % len(SMTP_ACCOUNTS)]["sender"]
+            if SMTP_ACCOUNTS
+            else "unknown"
+        )
 
         # 8) Log result
         with open(LEADS_LOG, "a", newline="", encoding="utf-8") as f:
@@ -252,14 +373,18 @@ def run_engine(batch_size=3):
                     country,
                     "sent" if email_status else "failed",
                     sender_used,
+                    "csv" if use_csv else "brain",
                 ]
             )
+
+        # Mark as now sent (so multiple runs in same session skip)
+        skip_emails.add(email_lower)
 
         # 9) Train the brain on the result (basic – we don't know opens yet)
         record_result(niche, country, subject, opened=False, clicked=False, converted=False)
 
-    print("\n✔ DONE — V6 engine finished batch.\n")
+    print("\n✔ DONE — V7.1 engine finished batch.\n")
 
 
 if __name__ == "__main__":
-    run_engine(batch_size=3)
+    run_engine(batch_size=1)
