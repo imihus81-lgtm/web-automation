@@ -1,263 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>XAI Websites – Pricing</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <title>Pricing – XAI Websites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --border: #1e293b;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --accent-2: #38bdf8;
+      --danger: #f97373;
+    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
-      color: #e5e7eb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
     }
-    a { color: inherit; text-decoration: none; }
-
     .page {
-      padding: 40px 16px 60px;
-      display: flex;
-      justify-content: center;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
     }
-    .shell {
-      width: 100%;
-      max-width: 1150px;
-    }
-
     header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:40px;
-      gap:12px;
-      flex-wrap:wrap;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
     }
-    header .logo {
-      font-weight:600;
-      letter-spacing:0.02em;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:18px;
+    header h1 {
+      font-size: 24px;
+      margin: 0;
     }
-    header .logo-badge {
-      width:24px;height:24px;
-      border-radius:8px;
-      background:linear-gradient(135deg,#22c55e,#14b8a6);
-      display:flex;align-items:center;justify-content:center;
-      font-size:13px;color:#022c22;
+    header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
     }
-    header .tag {
-      font-size:12px;
-      color:#9ca3af;
+    a.back-link {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 6px 12px;
     }
-
-    .btn-link {
-      font-size:13px;
-      padding:8px 14px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.6);
-      background:rgba(15,23,42,0.8);
+    a.back-link:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
     }
 
-    h1 {
-      font-size:34px;
-      margin-bottom:8px;
-      text-align:left;
+    .hero {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(56, 189, 248, 0.06));
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .sub {
-      color:#9ca3af;
-      margin-bottom:40px;
-      text-align:left;
-      font-size:15px;
-      max-width:620px;
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.09);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      font-size: 11px;
+      color: #bbf7d0;
+      margin-bottom: 6px;
     }
 
     .plans {
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap:20px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
     }
-
+    @media (max-width: 900px) {
+      .plans { grid-template-columns: 1fr; }
+    }
     .plan {
-      background:rgba(15,23,42,0.98);
-      border-radius:20px;
-      padding:24px;
-      border:1px solid rgba(148,163,184,0.5);
-      box-shadow:0 20px 50px rgba(15,23,42,0.85);
+      position: relative;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
     }
-
-    .plan h3 {
-      margin:0 0 12px;
-      font-size:20px;
+    .plan--highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5), 0 22px 60px rgba(21, 128, 61, 0.6);
+    }
+    .plan-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .plan-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+    .pill--free {
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--text-muted);
+    }
+    .pill--pro {
+      background: var(--accent-soft);
+      color: #bbf7d0;
+    }
+    .pill--soon {
+      background: rgba(148, 163, 184, 0.16);
+      color: #fecaca;
     }
 
     .price {
-      font-size:26px;
-      font-weight:600;
-      margin:0 0 12px;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 2px;
     }
-    .price small {
-      display:block;
-      font-size:12px;
-      color:#9ca3af;
-      margin-top:3px;
+    .price span {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
     }
-
-    .tagline {
-      margin:0 0 14px;
-      font-size:14px;
-      color:#9ca3af;
-      line-height:1.4;
-      min-height:40px;
+    .price-small {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
     }
-
     ul.features {
-      padding:0;
-      list-style:none;
-      margin:0 0 22px;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 14px;
+      font-size: 12px;
+      color: var(--text-muted);
     }
-
     ul.features li {
-      display:flex;
-      gap:8px;
-      margin-bottom:10px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    ul.features li span.icon {
+      font-size: 13px;
+      margin-top: 1px;
     }
 
-    .check {
-      width:16px;height:16px;border-radius:999px;
-      background:#22c55e;
-      color:#022c22;
-      font-size:10px;
-      display:flex;align-items:center;justify-content:center;
-      flex-shrink:0;
+    .btn-row {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      width: 100%;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .btn--ghost {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+    .btn--ghost:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+    .btn--primary {
+      background: linear-gradient(90deg, var(--accent), #16a34a);
+      color: #022c22;
+      border-color: rgba(34, 197, 94, 0.9);
+      font-weight: 600;
+    }
+    .btn--primary:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+    }
+    .btn--outline-danger {
+      background: transparent;
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+    }
+    .btn--outline-danger:hover {
+      background: rgba(248, 113, 113, 0.1);
     }
 
-    .btn-plan {
-      display:block;
-      text-align:center;
-      padding:12px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:500;
-      background:linear-gradient(135deg,#2563eb,#22c55e);
-      color:#fff;
+    .plan-ribbon {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: #bbf7d0;
     }
 
-    .btn-plan.outline {
-      background:none;
-      border:1px solid rgba(148,163,184,0.5);
-      color:#e5e7eb;
-    }
-
-    footer {
-      margin-top:40px;
-      font-size:12px;
-      color:#6b7280;
+    .footnote {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
   </style>
 </head>
-
 <body>
-<div class="page">
-  <div class="shell">
-
-    <!-- HEADER -->
+  <div class="page">
     <header>
       <div>
-        <div class="logo">
-          <span class="logo-badge">XA</span>
-          <span>XAI Websites</span>
-        </div>
-        <div class="tag">AI-powered website generator</div>
+        <h1>Pricing</h1>
+        <p>Start free. Upgrade only when your AI websites start bringing in real customers.</p>
       </div>
-
-      <a href="{{ url_for('index') }}" class="btn-link">Back to generator</a>
+      <a href="/" class="back-link">← Back to generator</a>
     </header>
 
-    <!-- TITLE -->
-    <h1>Choose your plan</h1>
-    <p class="sub">
-      Start for free — upgrade anytime. Pro includes unlimited generations, premium templates,
-      and upcoming multi-language features. Premium tier unlocks AI-powered multi-page sites,
-      hosting, and agency features.
+    <section class="hero">
+      <div>
+        <div class="hero-badge">
+          <span>⚡ Early access</span>
+          <span>Founders pricing locked in</span>
+        </div>
+        <h2>Launch unlimited AI websites without hiring a designer.</h2>
+        <p>
+          Generate beautiful, multi-page sites in under 30 seconds. Download the full HTML or
+          publish instantly to a live subdomain under xaiwebsites.com.
+        </p>
+      </div>
+      <div style="min-width: 220px; font-size: 12px; color: var(--text-muted);">
+        <strong style="color: var(--accent);">Recommended:</strong> Start on Pro, build a few
+        client sites, and let just one client cover your subscription.
+      </div>
+    </section>
+
+    <section class="plans">
+      <!-- Free plan -->
+      <article class="plan">
+        <div class="pill pill--free">Free preview</div>
+        <div class="plan-name">Free</div>
+        <div class="plan-tagline">Play with the AI, no credit card required.</div>
+        <div class="price">¥0 <span>/ forever</span></div>
+        <div class="price-small">Great for testing your first ideas.</div>
+
+        <ul class="features">
+          <li><span class="icon">✅</span><span>Unlimited previews in the browser</span></li>
+          <li><span class="icon">✅</span><span>Full AI copy, layout and sections</span></li>
+          <li><span class="icon">✅</span><span>Multi-page sites: Home, About, Services, Contact, Store</span></li>
+          <li><span class="icon">⛔</span><span>No HTML download</span></li>
+          <li><span class="icon">⛔</span><span>No 1-click publishing to subdomains</span></li>
+        </ul>
+
+        <div class="btn-row">
+          <a href="/" class="btn btn--ghost">Continue for free</a>
+        </div>
+      </article>
+
+      <!-- Pro plan -->
+      <article class="plan plan--highlight">
+        <div class="pill pill--pro">Most popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-tagline">For freelancers & small agencies.</div>
+        <div class="price">¥9.90 <span>/ month</span></div>
+        <div class="price-small">Founders offer – later ¥29 / month.</div>
+        <div class="plan-ribbon">Early-bird 66% OFF</div>
+
+        <ul class="features">
+          <li><span class="icon">✅</span><span>Everything in Free, plus:</span></li>
+          <li><span class="icon">✅</span><span>Download full HTML ZIP for every website</span></li>
+          <li><span class="icon">✅</span><span>1-click live publishing to <code>yourname.xaiwebsites.com</code></span></li>
+          <li><span class="icon">✅</span><span>Unlimited projects & unlimited regenerations</span></li>
+          <li><span class="icon">✅</span><span>Priority render speed & early access to new templates</span></li>
+        </ul>
+
+        <div class="btn-row">
+          <!-- TODO: Replace href with your real PayPal subscription link -->
+          <a
+            href="https://www.paypal.com/checkoutnow?token=REPLACE_WITH_YOUR_PAYPAL_LINK"
+            class="btn btn--primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pay with PayPal &amp; unlock Pro
+          </a>
+          <button class="btn btn--ghost" type="button" disabled>
+            Stripe subscription – coming after review
+          </button>
+        </div>
+      </article>
+
+      <!-- Agency plan -->
+      <article class="plan">
+        <div class="pill pill--soon">Coming soon</div>
+        <div class="plan-name">Agency</div>
+        <div class="plan-tagline">For serious automation and multiple brands.</div>
+        <div class="price">¥99 <span>/ month</span></div>
+        <div class="price-small">Designed for agencies & power users.</div>
+
+        <ul class="features">
+          <li><span class="icon">✅</span><span>Everything in Pro</span></li>
+          <li><span class="icon">✅</span><span>Higher send limits for AI outreach</span></li>
+          <li><span class="icon">✅</span><span>Multiple team members & client workspaces</span></li>
+          <li><span class="icon">✅</span><span>Advanced templates & white-label options</span></li>
+          <li><span class="icon">⏳</span><span>Launching after core system is stable</span></li>
+        </ul>
+
+        <div class="btn-row">
+          <button class="btn btn--outline-danger" type="button" disabled>
+            Join waitlist (soon)
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <p class="footnote">
+      Prices may change for new customers in the future, but your early-access pricing will be locked
+      in as long as your subscription stays active. All amounts are shown in Japanese yen (¥) for
+      convenience.
     </p>
-
-    <!-- PRICING PLAN GRID -->
-    <div class="plans">
-
-      <!-- FREE -->
-      <article class="plan">
-        <h3>Free</h3>
-        <p class="price">$0 <span>/ forever</span></p>
-        <p class="tagline">Good for testing. Limited basic downloads.</p>
-
-        <ul class="features">
-          <li><span class="check">✓</span><span>Generate & preview websites</span></li>
-          <li><span class="check">✓</span><span>Basic HTML download (limited)</span></li>
-          <li><span class="check">✓</span><span>Mobile-friendly layouts</span></li>
-          <li><span class="check">✓</span><span>No credit card required</span></li>
-        </ul>
-
-        <a href="{{ url_for('index') }}" class="btn-plan outline">Start Free</a>
-      </article>
-
-      <!-- PRO PLAN -->
-      <article class="plan" style="border:1px solid #22c55e;">
-        <h3>Pro – Launch Price</h3>
-
-        <p class="price">
-          $9.90<span> / month</span>
-          <small>(normally $29)</small>
-        </p>
-
-        <p class="tagline">
-          Perfect for small business owners. Unlimited sites + premium templates.
-        </p>
-
-        <ul class="features">
-          <li><span class="check">✓</span><span>Unlimited website generations</span></li>
-          <li><span class="check">✓</span><span>All premium templates included</span></li>
-          <li><span class="check">✓</span><span>Download unlimited HTML files</span></li>
-          <li><span class="check">✓</span><span>Advanced SEO-optimized structure</span></li>
-          <li><span class="check">✓</span><span>Future updates included</span></li>
-        </ul>
-
-        <!-- Stripe checkout route -->
-        <a href="{{ url_for('create_checkout_session') }}" class="btn-plan">Upgrade to Pro</a>
-      </article>
-
-      <!-- PREMIUM -->
-      <article class="plan">
-        <h3>Premium (coming soon)</h3>
-
-        <p class="price">
-          $39<span> / month</span>
-          <small>(founder discounts from $29)</small>
-        </p>
-
-        <p class="tagline">
-          For agencies who need hosting, multi-page websites, and advanced AI features.
-        </p>
-
-        <ul class="features">
-          <li><span class="check">✓</span><span>Everything in Pro</span></li>
-          <li><span class="check">✓</span><span>Multi-page sites (Home, About, Services, Contact)</span></li>
-          <li><span class="check">✓</span><span>Hosting on xaiwebsites.com subdomains</span></li>
-          <li><span class="check">✓</span><span>Early access to new AI tools</span></li>
-        </ul>
-
-        <a href="{{ url_for('index') }}" class="btn-plan outline">Join Waitlist</a>
-      </article>
-
-    </div>
-
-    <footer>
-      © 2025 XAI Agent – Early Access Product
-    </footer>
-
   </div>
-</div>
 </body>
 </html>

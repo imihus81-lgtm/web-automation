@@ -1,0 +1,265 @@
+import os
+import csv
+import smtplib
+import ssl
+import random
+from datetime import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+from dotenv import load_dotenv
+
+from brain_leads import (
+    choose_best_niche,
+    choose_best_country,
+    choose_subject,
+    record_result,
+)
+from brain import generate_commerce_site
+from app import save_multipage_site, copy_site_to_subdomain, slugify
+
+# -----------------------------
+# ENV + PATHS
+# -----------------------------
+load_dotenv()
+
+BASE_DIR = os.path.dirname(__file__)
+DATA_DIR = os.path.join(BASE_DIR, "data")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "email_templates")
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(TEMPLATES_DIR, exist_ok=True)
+
+LEADS_LOG = os.path.join(DATA_DIR, "leads_log.csv")
+
+PRICING_URL = os.getenv("PRICING_URL", "https://xaiwebsites.com/pricing")
+
+# Single fallback SMTP (old style)
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_PASS = os.getenv("EMAIL_APP_PASSWORD")
+EMAIL_SENDER = os.getenv("EMAIL_SENDER", SMTP_USER)
+
+# -----------------------------
+# SMTP ACCOUNTS (ROTATION)
+# -----------------------------
+SMTP_ACCOUNTS = []
+
+for i in range(1, 6):
+    host = os.getenv(f"SMTP_HOST_{i}")
+    user = os.getenv(f"SMTP_USER_{i}")
+    pwd = os.getenv(f"SMTP_PASS_{i}")
+    sender = os.getenv(f"EMAIL_SENDER_{i}") or user
+    port = int(os.getenv(f"SMTP_PORT_{i}", "587"))
+
+    if host and user and pwd:
+        SMTP_ACCOUNTS.append(
+            {
+                "host": host,
+                "port": port,
+                "user": user,
+                "password": pwd,
+                "sender": sender,
+            }
+        )
+
+# If no numbered accounts, fall back to single Gmail config
+if not SMTP_ACCOUNTS and SMTP_USER and SMTP_PASS:
+    SMTP_ACCOUNTS.append(
+        {
+            "host": SMTP_HOST,
+            "port": SMTP_PORT,
+            "user": SMTP_USER,
+            "password": SMTP_PASS,
+            "sender": EMAIL_SENDER or SMTP_USER,
+        }
+    )
+
+SEND_INDEX = 0
+
+
+def choose_smtp_account():
+    """Round-robin selection of SMTP accounts."""
+    global SEND_INDEX
+    if not SMTP_ACCOUNTS:
+        raise RuntimeError("No SMTP accounts configured")
+    acc = SMTP_ACCOUNTS[SEND_INDEX % len(SMTP_ACCOUNTS)]
+    SEND_INDEX += 1
+    return acc
+
+
+# -------------------------------------------------
+# Load email templates & select random one
+# -------------------------------------------------
+def load_template():
+    files = [
+        f for f in os.listdir(TEMPLATES_DIR)
+        if f.endswith(".html")
+    ]
+    if not files:
+        raise Exception("❌ No email templates found in email_templates/")
+    filename = random.choice(files)
+    with open(os.path.join(TEMPLATES_DIR, filename), "r", encoding="utf-8") as f:
+        return f.read()
+
+
+# -------------------------------------------------
+# Send email (with rotation)
+# -------------------------------------------------
+def send_email(to_email, subject, html):
+    if not SMTP_ACCOUNTS:
+        print("❌ No SMTP accounts available, cannot send email")
+        return False
+
+    account = choose_smtp_account()
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = account["sender"]
+    msg["To"] = to_email
+    msg.attach(MIMEText(html, "html"))
+
+    try:
+        context = ssl.create_default_context()
+        with smtplib.SMTP(account["host"], account["port"]) as server:
+            server.starttls(context=context)
+            server.login(account["user"], account["password"])
+            server.sendmail(account["sender"], to_email, msg.as_string())
+
+        print(f"📧 Email sent via {account['sender']} → {to_email}")
+        return True
+
+    except Exception as e:
+        print(f"❌ Email send error via {account['sender']} to {to_email}: {e}")
+        return False
+
+
+# -------------------------------------------------
+# Generate business lead dynamically (V6 brain)
+# -------------------------------------------------
+def generate_lead():
+    niche = choose_best_niche()
+    country = choose_best_country()
+
+    business_names = [
+        f"{country} {niche.capitalize()} Solutions",
+        f"{niche.capitalize()} Experts {country}",
+        f"{country} Premium {niche.capitalize()}",
+        f"{niche.capitalize()} Masters {country}",
+        f"{country} Elite {niche.capitalize()}",
+    ]
+
+    business_name = random.choice(business_names)
+    city = "Global"
+
+    # placeholder email until real lead CSV / scraper
+    email = f"info@{slugify(business_name)}.com"
+
+    return {
+        "business": business_name,
+        "niche": niche,
+        "country": country,
+        "city": city,
+        "email": email,
+    }
+
+
+# -------------------------------------------------
+# MAIN ENGINE (V6: with rotation + brain)
+# -------------------------------------------------
+def run_engine(batch_size=3):
+    print("\n🚀 Starting Global AI Leads Engine (V6 – rotation enabled)")
+
+    # Ensure log file initialized
+    if not os.path.exists(LEADS_LOG):
+        with open(LEADS_LOG, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [
+                    "timestamp",
+                    "business",
+                    "email",
+                    "slug",
+                    "preview",
+                    "niche",
+                    "country",
+                    "email_status",
+                    "sender",
+                ]
+            )
+
+    for _ in range(batch_size):
+        lead = generate_lead()
+
+        business = lead["business"]
+        niche = lead["niche"]
+        country = lead["country"]
+        city = lead["city"]
+        email = lead["email"]
+
+        slug = slugify(business)
+
+        print(f"\n=== Lead: {business} ({niche} / {country}) → {email} ===")
+
+        # 1) Generate website with brain
+        site_json = generate_commerce_site(
+            business,
+            niche,
+            f"{niche} services in {country}",
+            city,
+            products=[],
+        )
+
+        # 2) Save site pages
+        folder_id, zip_path, folder_path = save_multipage_site(site_json)
+
+        # 3) Deploy to subdomain
+        copy_site_to_subdomain(slug, folder_path)
+
+        preview_url = f"https://{slug}.xaiwebsites.com"
+
+        # 4) Pick subject from brain
+        subject = choose_subject()
+
+        # 5) Load email template
+        html_template = load_template()
+
+        # 6) Fill template
+        html = (
+            html_template.replace("{{BUSINESS}}", business)
+            .replace("{{PREVIEW}}", preview_url)
+            .replace("{{PRICING}}", PRICING_URL)
+        )
+
+        # 7) Send email (rotation)
+        # Choose account again just for logging
+        account_for_log = SMTP_ACCOUNTS[ (SEND_INDEX - 1) % len(SMTP_ACCOUNTS) ] if SMTP_ACCOUNTS else {"sender": "unknown"}
+        email_status = send_email(email, subject, html)
+        sender_used = account_for_log.get("sender", "unknown")
+
+        # 8) Log result
+        with open(LEADS_LOG, "a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [
+                    str(datetime.now()),
+                    business,
+                    email,
+                    slug,
+                    preview_url,
+                    niche,
+                    country,
+                    "sent" if email_status else "failed",
+                    sender_used,
+                ]
+            )
+
+        # 9) Train the brain on the result (basic – we don't know opens yet)
+        record_result(niche, country, subject, opened=False, clicked=False, converted=False)
+
+    print("\n✔ DONE — V6 engine finished batch.\n")
+
+
+if __name__ == "__main__":
+    run_engine(batch_size=3)
