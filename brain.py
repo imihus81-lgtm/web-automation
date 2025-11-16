@@ -1,124 +1,176 @@
 import os
 import json
-from dotenv import load_dotenv
 from openai import OpenAI
 
-# ==========================
-# LOAD ENV
-# ==========================
-load_dotenv()
-
-# OPENAI CLIENT (auto loads OPENAI_API_KEY)
-client = OpenAI()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-# ==========================
-# SAFETY
-# ==========================
-def safe(v):
-    return v if v else ""
+# =============================
+# V8 — INDUSTRY TONE MAPPING
+# =============================
+INDUSTRY_TONES = {
+    "restaurant": "Warm, sensory, delicious, inviting, premium dining atmosphere",
+    "salon": "Luxury, beauty-focused, soft, feminine, elegant, relaxing",
+    "clinic": "Trustworthy, medical, clean, professional, caring",
+    "auto repair": "Technical, expert, reliable, fast service, strong customer trust",
+    "roofer": "Strong, durable, trusted, safety-first, protective",
+    "law firm": "Authority, justice, confidence, clarity, professionalism",
+    "real estate": "Financial, premium lifestyle, trust, investment oriented",
+    "e-commerce": "Modern, bold, product-centered, conversion-optimized",
+    "default": "Professional, modern, clean, trustworthy business style",
+}
 
 
-# ==========================
-# MAIN WEBSITE GENERATOR (NO reasoning.effort)
-# ==========================
-def generate_commerce_site(
-    business_name,
-    business_category,
-    business_description,
-    city,
-    products=None,
-    color_theme="blue",
-    email="",
-    phone="",
-    logo_url=""
-):
-    products = products or []
+# =============================
+# MAIN BRAIN FUNCTION (V8)
+# =============================
+def generate_commerce_site(business_name,
+                           business_category,
+                           business_description,
+                           business_address,
+                           phone,
+                           email,
+                           color_theme="#1d4ed8",
+                           logo_url="",
+                           ecommerce_enabled=False,
+                           products=None):
+    """
+    Generates full multi-page site JSON using OpenAI Responses API.
+    """
+
+    if products is None:
+        products = []
+
+    tone = INDUSTRY_TONES.get(business_category.lower(), INDUSTRY_TONES["default"])
 
     prompt = f"""
-You are XAI Commerce — an ultra-advanced AI Shopify-style website generator.
+You are XAI Commerce — the world's most advanced AI website builder.
 
-Generate COMPLETE MULTIPAGE WEBSITE JSON.
+Generate a complete, multi-page business website with **premium Tailwind-style HTML**.
+NO JavaScript frameworks. Pure HTML + inline Tailwind CSS classes.
 
----------------------------------------
-INPUT
----------------------------------------
-BUSINESS_NAME: {business_name}
-BUSINESS_CATEGORY: {business_category}
-BUSINESS_DESCRIPTION: {business_description}
-CITY: {city}
-EMAIL: {email}
-PHONE: {phone}
-COLOR_THEME: {color_theme}
-LOGO_URL: {logo_url}
-PRODUCTS: {products}
+===========================
+BUSINESS INFO
+===========================
+Name: {business_name}
+Category: {business_category}
+Description: {business_description}
+Address: {business_address}
+Phone: {phone}
+Email: {email}
+Logo URL: {logo_url}
+Color Theme: {color_theme}
+Tone: {tone}
 
----------------------------------------
-OUTPUT FORMAT (STRICT)
----------------------------------------
+===========================
+E-COMMERCE ENABLED: {ecommerce_enabled}
+===========================
+
+Products (if any):
+{json.dumps(products, indent=2)}
+
+===========================
+REQUIRED OUTPUT FORMAT
+===========================
+
+Return ONLY a JSON object with keys:
+- home
+- about
+- services
+- store
+- products  (dictionary of product_name → HTML)
+- contact
+
+Example:
 {{
   "home": "<html>...</html>",
   "about": "<html>...</html>",
   "services": "<html>...</html>",
   "store": "<html>...</html>",
   "products": {{
-      "product1": "<html>...</html>"
+      "Product Name": "<html>...</html>",
+      "Another Product": "<html>...</html>"
   }},
   "contact": "<html>...</html>"
 }}
 
-If no products exist:
-- store = ""
-- products = {{}}
+===========================
+PAGE REQUIREMENTS
+===========================
 
----------------------------------------
-STYLE
----------------------------------------
-- Modern clean HTML with inline CSS or TailwindCDN
-- NO external JS build tools
+HOME PAGE (mandatory)
+- Big hero section with strong title + subtitle
+- CTA buttons
+- Services or product grid
+- Testimonials (AI generated)
+- FAQ
+- Footer
+
+ABOUT PAGE
+- Company story
+- Mission
+- Values
+- Team members (AI generated)
+
+SERVICES PAGE
+- 3–6 detailed services
+- Benefits
+- Pricing suggestions
+
+STORE PAGE (if ecommerce_enabled = true)
+- Product grid layout
+- Product cards with image/price/description
+
+PRODUCT PAGES
+For each product:
+- SEO title
+- Meta description
+- Features
+- Benefits
+- Story
+- Specifications
+- FAQ
+- Reviews (AI generated)
+
+CONTACT PAGE
+- Contact form HTML
+- Business info
+- Google Maps placeholder
+
+===========================
+STYLE GUIDE
+===========================
+- Modern
+- Tailwind style classes
+- Clean structure
 - No lorem ipsum
-- Business-ready copywriting
+- Use the color theme
+
+===========================
+RETURN ONLY VALID JSON
+===========================
 """
 
-    # ===== API CALL (NO REASONING BLOCK) =====
     response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=[{"role": "system", "content": prompt}]
+        model="gpt-4o-mini",
+        input=prompt,
+        max_output_tokens=120000
     )
 
-    # Extract text output
+    raw_text = response.output_text
+
     try:
-        raw = response.output[0].content[0].text
-        data = json.loads(raw)
-        return data
+        site_json = json.loads(raw_text)
+        return site_json
+
     except Exception as e:
-        print("❌ JSON ERROR in brain.py:", e)
-        return fallback_site(business_name)
-
-
-# ==========================
-# PREVIEW HELPER
-# ==========================
-def quick_preview_html(business, slug):
-    url = f"https://{slug}.xaiwebsites.com"
-    return f"""
-    <html><body>
-    <h2>{business}</h2>
-    <p>Your preview:</p>
-    <a href="{url}">{url}</a>
-    </body></html>
-    """
-
-
-# ==========================
-# FALLBACK (NEVER BREAK ENGINE)
-# ==========================
-def fallback_site(business):
-    return {
-        "home": f"<html><body><h1>{business}</h1><p>Site failed to generate.</p></body></html>",
-        "about": "",
-        "services": "",
-        "store": "",
-        "products": {},
-        "contact": "",
-    }
+        # Safety fallback: wrap raw text in a JSON object
+        print("JSON parsing failed — returning fallback wrapper:", e)
+        return {
+            "home": raw_text,
+            "about": "",
+            "services": "",
+            "store": "",
+            "products": {},
+            "contact": "",
+        }

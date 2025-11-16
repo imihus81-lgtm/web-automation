@@ -1,188 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Your Website Is Ready – XAI Websites</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Website – XAI Websites</title>
     <style>
+        :root {
+            --bg: #020617;
+            --panel: #030712;
+            --card: #0b1020;
+            --border: #111827;
+            --accent: #22c55e;
+            --accent-soft: rgba(34,197,94,0.12);
+            --accent-blue: #38bdf8;
+            --text-soft: #9ca3af;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at top, #020617, #020617);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
             color: #e5e7eb;
         }
-        .shell {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 26px 20px 40px;
-        }
-        header {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:20px;
-        }
-        .logo {
-            display:flex;
-            gap:8px;
-            align-items:center;
-            font-weight:700;
-        }
-        .logo-badge {
-            width:28px;height:28px;border-radius:9px;
-            background:linear-gradient(135deg,#22c55e,#2563eb);
-        }
-        .badge {
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
-            padding:5px 10px;
-            border-radius:999px;
-            background:rgba(15,23,42,0.9);
-            border:1px solid rgba(148,163,184,0.5);
-            font-size:11px;
-        }
-        h1 { margin:10px 0 4px;font-size:26px; }
-        p.sub { margin:0 0 12px;color:#9ca3af;font-size:14px; }
 
-        .layout {
-            display:grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap:18px;
+        .nav {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 14px 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
         }
-        @media (max-width:900px){
-            .layout { grid-template-columns:1fr; }
+
+        .logo {
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .plan-pill {
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .plan-pill.free {
+            background: #7f1d1d;
+            color: #fecaca;
+        }
+
+        .plan-pill.pro {
+            background: #064e3b;
+            color: #6ee7b7;
+        }
+
+        .wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 22px 20px 40px;
+        }
+
+        .headline {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .headline h1 {
+            font-size: clamp(28px, 4vw, 34px);
+            margin-bottom: 6px;
+        }
+
+        .headline p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-soft);
+        }
+
+        .alert {
+            background: #b91c1c;
+            padding: 10px 14px;
+            border-radius: 9px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .alert a {
+            color: #fefce8;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr);
+            gap: 18px;
+            margin-top: 18px;
         }
 
         .card {
-            background:rgba(15,23,42,0.96);
-            border-radius:18px;
-            border:1px solid rgba(148,163,184,0.5);
-            box-shadow:0 22px 70px rgba(0,0,0,0.8);
-            padding:18px;
+            background: linear-gradient(145deg, #020617, #020617, #020617);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 18px 18px 16px;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.85);
+            position: relative;
+            overflow: hidden;
         }
 
-        iframe {
-            width:100%;
-            height:520px;
-            border-radius:13px;
-            border:1px solid rgba(148,163,184,0.4);
-            background:white;
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 55%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .icon-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(56,189,248,0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-soft);
+        }
+
+        .html-preview {
+            margin-top: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.45;
+            background: #020617;
+            border-radius: 10px;
+            border: 1px solid #111827;
+            padding: 10px 12px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 26px;
         }
 
         .btn {
-            display:inline-flex;
-            justify-content:center;
-            align-items:center;
-            gap:6px;
-            padding:10px 15px;
-            border-radius:999px;
-            border:none;
-            cursor:pointer;
-            font-size:13px;
-            font-weight:600;
-            text-decoration:none;
+            display: inline-block;
+            border-radius: 999px;
+            padding: 10px 18px;
+            margin: 6px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.18s ease-out;
         }
-        .btn-primary {
-            background:linear-gradient(135deg,#2563eb,#22c55e);
-            color:#fff;
-        }
-        .btn-ghost {
-            background:transparent;
-            color:#e5e7eb;
-            border:1px solid rgba(148,163,184,0.7);
-        }
-        .btn-disabled {
-            opacity:.45;
-            cursor:not-allowed;
-        }
-        .small { font-size:12px;color:#94a3b8; }
 
-        .pill {
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
-            padding:6px 10px;
-            border-radius:999px;
-            border:1px solid rgba(148,163,184,0.35);
-            font-size:11px;
-            color:#9ca3af;
-            margin-top:10px;
+        .btn-primary {
+            background: var(--accent);
+            color: #022c22;
         }
-        a { color:#38bdf8;text-decoration:none; }
+
+        .btn-primary:hover {
+            background: #4ade80;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: #1f2937;
+            color: #e5e7eb;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-blue);
+            color: #bfdbfe;
+            transform: translateY(-1px);
+        }
+
+        .btn-disabled {
+            background: #111827;
+            color: #6b7280;
+            border-color: #1f2937;
+            cursor: default;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="shell">
+    <div class="nav">
+        <div class="logo">XAI Websites</div>
 
-    <header>
-        <div class="logo">
-            <div class="logo-badge"></div>
-            <div>XAI Websites</div>
+        {% if is_pro %}
+            <div class="plan-pill pro">Pro active</div>
+        {% else %}
+            <div class="plan-pill free">Free plan</div>
+        {% endif %}
+    </div>
+
+    <div class="wrapper">
+
+        {% if not is_pro %}
+        <div class="alert">
+            🔒 You are using the <strong>Free plan</strong> — Download & 1-click Subdomain Publish are disabled.
+            <a href="/pricing">Upgrade to Pro →</a>
         </div>
-        <div class="badge">✅ AI just generated a live website preview</div>
-    </header>
+        {% endif %}
 
-    <main>
-        <h1>Your website is ready 🎉</h1>
-        <p class="sub">
-            Here is a live preview rendered directly from the HTML we generated. You can download the full ZIP
-            or, on Pro, publish it to a subdomain in one click.
-        </p>
+        <div class="headline">
+            <h1>Your Generated Website</h1>
+            <p>Below are your AI-generated pages. Copy the HTML or unlock full ZIP + instant publishing with Pro.</p>
+        </div>
 
-        <div class="layout">
-            <!-- LEFT: PREVIEW -->
-            <div class="card">
-                <iframe src="{{ preview_url }}" title="Website preview"></iframe>
-            </div>
+        <div class="grid">
 
-            <!-- RIGHT: ACTIONS -->
-            <div class="card">
-                <h2 style="margin:0 0 8px;font-size:18px;">What you can do next</h2>
-                <p class="small" style="margin:0 0 16px;">
-                    This site is stored inside our generator as a multi-page HTML package (Home, About, Services, Contact
-                    and optional Store).
-                </p>
-
-                {% if is_pro %}
-                    <p class="small" style="margin-bottom:10px;">Pro is active ✅</p>
-                    <a class="btn btn-primary" href="{{ download_url }}">
-                        ⬇️ Download full ZIP
-                    </a>
-
-                    <form method="post" action="{{ url_for('deploy', folder=folder_id) }}" style="margin-top:10px;">
-                        <input type="hidden" name="business_slug" value="{{ business_slug }}">
-                        <button type="submit" class="btn btn-ghost">
-                            🌐 Publish live to {{ business_slug }}.xaiwebsites.com
-                        </button>
-                    </form>
-                {% else %}
-                    <button class="btn btn-primary btn-disabled" disabled>
-                        ⬇️ Download full ZIP (Pro only)
-                    </button>
-                    <p class="small" style="margin-top:8px;">
-                        Upgrade to Pro to download the complete multi-page website and publish it to a live subdomain.
-                    </p>
-                    <a class="btn btn-ghost" href="{{ url_for('pricing') }}" style="margin-top:8px;">
-                        💳 View pricing
-                    </a>
-                {% endif %}
-
-                <div class="pill">
-                    🧪 Preview only — the HTML is fully generated even if you don’t download yet.
+            <!-- HOME PAGE -->
+            <section class="card">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="icon-badge">🏠</div>
+                        <div>
+                            <div class="card-title">Home Page</div>
+                            <div class="card-subtitle">Hero, intro, main call-to-action</div>
+                        </div>
+                    </div>
+                    <div class="html-preview">{{ site.home | safe }}</div>
                 </div>
+            </section>
 
-                <p class="small" style="margin-top:14px;">
-                    Example live URL (after publishing):<br>
-                    <code>https://{{ business_slug }}.xaiwebsites.com</code>
-                </p>
-            </div>
+            <!-- ABOUT PAGE -->
+            <section class="card">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="icon-badge">📘</div>
+                        <div>
+                            <div class="card-title">About Page</div>
+                            <div class="card-subtitle">Story, mission, values, team</div>
+                        </div>
+                    </div>
+                    <div class="html-preview">{{ site.about | safe }}</div>
+                </div>
+            </section>
+
+            <!-- SERVICES PAGE -->
+            <section class="card">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="icon-badge">🛠</div>
+                        <div>
+                            <div class="card-title">Services Page</div>
+                            <div class="card-subtitle">Offerings, benefits, pricing suggestions</div>
+                        </div>
+                    </div>
+                    <div class="html-preview">{{ site.services | safe }}</div>
+                </div>
+            </section>
+
+            <!-- STORE PAGE (IF ANY) -->
+            {% if site.store %}
+            <section class="card">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="icon-badge">🛒</div>
+                        <div>
+                            <div class="card-title">Store Page</div>
+                            <div class="card-subtitle">Product grid, CTA buttons</div>
+                        </div>
+                    </div>
+                    <div class="html-preview">{{ site.store | safe }}</div>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- CONTACT PAGE -->
+            <section class="card">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="icon-badge">📞</div>
+                        <div>
+                            <div class="card-title">Contact Page</div>
+                            <div class="card-subtitle">Form, map placeholder, business info</div>
+                        </div>
+                    </div>
+                    <div class="html-preview">{{ site.contact | safe }}</div>
+                </div>
+            </section>
+
+            <!-- PRODUCT PAGES -->
+            {% if site.products %}
+                {% for name, html in site.products.items() %}
+                <section class="card">
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <div class="icon-badge">📦</div>
+                            <div>
+                                <div class="card-title">Product – {{ name }}</div>
+                                <div class="card-subtitle">Full SEO product page with details & FAQs</div>
+                            </div>
+                        </div>
+                        <div class="html-preview">{{ html | safe }}</div>
+                    </div>
+                </section>
+                {% endfor %}
+            {% endif %}
+
         </div>
-    </main>
 
-</div>
+        <div class="actions">
+            {% if is_pro %}
+                <a href="/download" class="btn btn-primary">⬇ Download full website (ZIP)</a>
+                <a href="/publish" class="btn btn-outline">🚀 Publish to subdomain</a>
+            {% else %}
+                <span class="btn btn-disabled">⬇ Download ZIP (Pro only)</span>
+                <span class="btn btn-disabled">🚀 Publish to subdomain (Pro only)</span>
+                <br/>
+                <a href="/pricing" class="btn btn-outline" style="margin-top:10px;">Upgrade to Pro →</a>
+            {% endif %}
+        </div>
 
+        <div class="footer">
+            © 2025 XAI Websites · Powered by XAI Agent
+        </div>
+
+    </div>
 </body>
 </html>

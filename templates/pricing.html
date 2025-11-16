@@ -1,363 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Pricing – XAI Websites</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #020617;
-      --card: #020617;
-      --border: #1e293b;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --accent: #22c55e;
-      --accent-soft: rgba(34, 197, 94, 0.12);
-      --accent-2: #38bdf8;
-      --danger: #f97373;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top left, #0f172a, #020617);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
-    }
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    header h1 {
-      font-size: 24px;
-      margin: 0;
-    }
-    header p {
-      margin: 4px 0 0;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    a.back-link {
-      font-size: 13px;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 6px 12px;
-    }
-    a.back-link:hover {
-      border-color: var(--accent-2);
-      color: var(--accent-2);
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing – XAI Websites</title>
+    <style>
+        :root {
+            --bg: #050816;
+            --card: #0b1020;
+            --card-soft: #101827;
+            --border: #1f2937;
+            --accent: #22c55e;
+            --accent-soft: rgba(34, 197, 94, 0.16);
+            --accent-blue: #38bdf8;
+            --text-soft: #9ca3af;
+            --danger: #f97373;
+        }
 
-    .hero {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(56, 189, 248, 0.06));
-      border-radius: 18px;
-      padding: 18px 18px 16px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .hero h2 {
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-    .hero p {
-      margin: 0;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.09);
-      border: 1px solid rgba(34, 197, 94, 0.5);
-      font-size: 11px;
-      color: #bbf7d0;
-      margin-bottom: 6px;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-    @media (max-width: 900px) {
-      .plans { grid-template-columns: 1fr; }
-    }
-    .plan {
-      position: relative;
-      background: rgba(15, 23, 42, 0.96);
-      border-radius: 18px;
-      padding: 18px 18px 16px;
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      min-height: 220px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
-    }
-    .plan--highlight {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5), 0 22px 60px rgba(21, 128, 61, 0.6);
-    }
-    .plan-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .plan-tagline {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-    .pill {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-    .pill--free {
-      background: rgba(148, 163, 184, 0.14);
-      color: var(--text-muted);
-    }
-    .pill--pro {
-      background: var(--accent-soft);
-      color: #bbf7d0;
-    }
-    .pill--soon {
-      background: rgba(148, 163, 184, 0.16);
-      color: #fecaca;
-    }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+            color: #f9fafb;
+        }
 
-    .price {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    .price span {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-muted);
-    }
-    .price-small {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-    ul.features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 14px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    ul.features li {
-      margin-bottom: 5px;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    ul.features li span.icon {
-      font-size: 13px;
-      margin-top: 1px;
-    }
+        .nav {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 18px 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+        }
 
-    .btn-row {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.15s ease;
-      width: 100%;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .btn--ghost {
-      background: transparent;
-      border-color: rgba(148, 163, 184, 0.6);
-      color: var(--text-muted);
-    }
-    .btn--ghost:hover {
-      border-color: var(--accent-2);
-      color: var(--accent-2);
-    }
-    .btn--primary {
-      background: linear-gradient(90deg, var(--accent), #16a34a);
-      color: #022c22;
-      border-color: rgba(34, 197, 94, 0.9);
-      font-weight: 600;
-    }
-    .btn--primary:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
-    }
-    .btn--outline-danger {
-      background: transparent;
-      border-color: rgba(248, 113, 113, 0.8);
-      color: #fecaca;
-    }
-    .btn--outline-danger:hover {
-      background: rgba(248, 113, 113, 0.1);
-    }
+        .logo {
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
 
-    .plan-ribbon {
-      position: absolute;
-      top: 10px;
-      right: 16px;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.6);
-      color: #bbf7d0;
-    }
+        .badge-early {
+            background: #022c22;
+            color: #6ee7b7;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
 
-    .footnote {
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-  </style>
+        .hero {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 32px 20px 16px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 4vw, 38px);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            margin: 4px 0;
+            color: var(--text-soft);
+            font-size: 15px;
+        }
+
+        .hero small {
+            color: #6ee7b7;
+            font-size: 12px;
+        }
+
+        .plans-wrapper {
+            max-width: 1080px;
+            margin: 8px auto 40px;
+            padding: 0 20px 40px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 26px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #020617, #020617, #020617);
+            border-radius: 18px;
+            padding: 22px 22px 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 55%);
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .plan-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .plan-desc {
+            margin-top: 4px;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .price {
+            margin-top: 14px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .price span {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-soft);
+        }
+
+        .divider {
+            margin: 14px 0 10px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #1f2937, transparent);
+        }
+
+        ul.features {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        ul.features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .check {
+            color: #4ade80;
+            font-size: 14px;
+            margin-top: 1px;
+        }
+
+        .cross {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 1px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            border-radius: 999px;
+            padding: 11px 14px;
+            margin-top: 16px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.18s ease-out;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #0b1120;
+        }
+
+        .btn-primary:hover {
+            background: #0ea5e9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: #1f2937;
+            color: #e5e7eb;
+        }
+
+        .btn-outline:hover {
+            border-color: #38bdf8;
+            color: #bae6fd;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #064e3b;
+            border-color: #10b981;
+            color: #ecfdf5;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .pill {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            background: var(--accent-soft);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #a7f3d0;
+        }
+
+        .card.pro {
+            border-color: #22c55e;
+            box-shadow: 0 24px 60px rgba(34, 197, 94, 0.35);
+            background: radial-gradient(circle at top, rgba(16, 185, 129, 0.12), #020617 60%);
+        }
+
+        .disclaimer {
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-soft);
+            text-align: center;
+        }
+
+        @media (max-width: 720px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div>
-        <h1>Pricing</h1>
-        <p>Start free. Upgrade only when your AI websites start bringing in real customers.</p>
-      </div>
-      <a href="/" class="back-link">← Back to generator</a>
-    </header>
+
+    <div class="nav">
+        <div class="logo">XAI Websites</div>
+        <div class="badge-early">Early access · Founders pricing</div>
+    </div>
 
     <section class="hero">
-      <div>
-        <div class="hero-badge">
-          <span>⚡ Early access</span>
-          <span>Founders pricing locked in</span>
+        <h1>Launch AI-built websites in seconds</h1>
+        <p>Generate multi-page sites with AI. Download the full HTML or publish instantly under xaiwebsites.com.</p>
+        <p><small>Pricing locked in for as long as your subscription stays active.</small></p>
+    </section>
+
+    <section class="plans-wrapper">
+        <div class="plans-grid">
+
+            <!-- FREE PLAN -->
+            <article class="card">
+                <div class="card-inner">
+                    <div class="plan-title">Free</div>
+                    <div class="plan-desc">Great for testing your first ideas.</div>
+
+                    <div class="price">
+                        ¥0 / month
+                        <span> · forever</span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <ul class="features">
+                        <li><span class="check">✔</span> Unlimited previews in the browser</li>
+                        <li><span class="check">✔</span> Full AI text, layout & sections</li>
+                        <li><span class="check">✔</span> Multi-page preview (Home, About, Services, Contact, Store)</li>
+                        <li><span class="cross">✘</span> HTML download</li>
+                        <li><span class="cross">✘</span> Subdomain publishing</li>
+                        <li><span class="cross">✘</span> eCommerce / product pages</li>
+                    </ul>
+
+                    <a href="/" class="btn btn-outline">Continue free</a>
+                </div>
+            </article>
+
+            <!-- PRO PLAN -->
+            <article class="card pro">
+                <div class="pill">Most popular</div>
+                <div class="card-inner">
+                    <div class="plan-title">Pro</div>
+                    <div class="plan-desc">For freelancers & small agencies.</div>
+
+                    <div class="price">
+                        ¥9.90 / month
+                        <span> · founders offer (later ¥29 / month)</span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <ul class="features">
+                        <li><span class="check">✔</span> Everything in Free</li>
+                        <li><span class="check">✔</span> Download full HTML ZIP for every website</li>
+                        <li><span class="check">✔</span> 1-click live publishing to <strong>yourname.xaiwebsites.com</strong></li>
+                        <li><span class="check">✔</span> Unlimited projects & regenerations</li>
+                        <li><span class="check">✔</span> Priority render speed & early access to new templates</li>
+                    </ul>
+
+                    <!-- PayPal (placeholder) -->
+                    <button class="btn btn-primary" type="button">
+                        Pay with PayPal (coming soon)
+                    </button>
+
+                    <!-- Stripe Checkout -->
+                    <form action="/create-checkout-session" method="POST">
+                        <button class="btn btn-secondary" type="submit">
+                            Stripe subscription · unlock Pro
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <!-- AGENCY (COMING SOON) -->
+            <article class="card" style="opacity:0.6;">
+                <div class="pill">Coming soon</div>
+                <div class="card-inner">
+                    <div class="plan-title">Agency</div>
+                    <div class="plan-desc">For serious automation & multiple brands.</div>
+
+                    <div class="price">
+                        ¥99 / month
+                        <span> · launch after core system stable</span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <ul class="features">
+                        <li><span class="check">✔</span> Everything in Pro</li>
+                        <li><span class="check">✔</span> Higher send limits for AI outreach & leads</li>
+                        <li><span class="check">✔</span> Multiple team members & client workspaces</li>
+                        <li><span class="check">✔</span> Advanced templates & white-label options</li>
+                        <li><span class="check">✔</span> Priority support & roadmap influence</li>
+                    </ul>
+
+                    <button class="btn btn-outline" type="button">
+                        Join agency waitlist (soon)
+                    </button>
+                </div>
+            </article>
+
         </div>
-        <h2>Launch unlimited AI websites without hiring a designer.</h2>
-        <p>
-          Generate beautiful, multi-page sites in under 30 seconds. Download the full HTML or
-          publish instantly to a live subdomain under xaiwebsites.com.
+
+        <p class="disclaimer">
+            Prices may change for new customers in the future, but your early-access pricing will stay locked
+            in as long as your subscription remains active.
         </p>
-      </div>
-      <div style="min-width: 220px; font-size: 12px; color: var(--text-muted);">
-        <strong style="color: var(--accent);">Recommended:</strong> Start on Pro, build a few
-        client sites, and let just one client cover your subscription.
-      </div>
     </section>
 
-    <section class="plans">
-      <!-- Free plan -->
-      <article class="plan">
-        <div class="pill pill--free">Free preview</div>
-        <div class="plan-name">Free</div>
-        <div class="plan-tagline">Play with the AI, no credit card required.</div>
-        <div class="price">¥0 <span>/ forever</span></div>
-        <div class="price-small">Great for testing your first ideas.</div>
-
-        <ul class="features">
-          <li><span class="icon">✅</span><span>Unlimited previews in the browser</span></li>
-          <li><span class="icon">✅</span><span>Full AI copy, layout and sections</span></li>
-          <li><span class="icon">✅</span><span>Multi-page sites: Home, About, Services, Contact, Store</span></li>
-          <li><span class="icon">⛔</span><span>No HTML download</span></li>
-          <li><span class="icon">⛔</span><span>No 1-click publishing to subdomains</span></li>
-        </ul>
-
-        <div class="btn-row">
-          <a href="/" class="btn btn--ghost">Continue for free</a>
-        </div>
-      </article>
-
-      <!-- Pro plan -->
-      <article class="plan plan--highlight">
-        <div class="pill pill--pro">Most popular</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-tagline">For freelancers & small agencies.</div>
-        <div class="price">¥9.90 <span>/ month</span></div>
-        <div class="price-small">Founders offer – later ¥29 / month.</div>
-        <div class="plan-ribbon">Early-bird 66% OFF</div>
-
-        <ul class="features">
-          <li><span class="icon">✅</span><span>Everything in Free, plus:</span></li>
-          <li><span class="icon">✅</span><span>Download full HTML ZIP for every website</span></li>
-          <li><span class="icon">✅</span><span>1-click live publishing to <code>yourname.xaiwebsites.com</code></span></li>
-          <li><span class="icon">✅</span><span>Unlimited projects & unlimited regenerations</span></li>
-          <li><span class="icon">✅</span><span>Priority render speed & early access to new templates</span></li>
-        </ul>
-
-        <div class="btn-row">
-          <!-- TODO: Replace href with your real PayPal subscription link -->
-          <a
-            href="https://www.paypal.com/checkoutnow?token=REPLACE_WITH_YOUR_PAYPAL_LINK"
-            class="btn btn--primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Pay with PayPal &amp; unlock Pro
-          </a>
-          <button class="btn btn--ghost" type="button" disabled>
-            Stripe subscription – coming after review
-          </button>
-        </div>
-      </article>
-
-      <!-- Agency plan -->
-      <article class="plan">
-        <div class="pill pill--soon">Coming soon</div>
-        <div class="plan-name">Agency</div>
-        <div class="plan-tagline">For serious automation and multiple brands.</div>
-        <div class="price">¥99 <span>/ month</span></div>
-        <div class="price-small">Designed for agencies & power users.</div>
-
-        <ul class="features">
-          <li><span class="icon">✅</span><span>Everything in Pro</span></li>
-          <li><span class="icon">✅</span><span>Higher send limits for AI outreach</span></li>
-          <li><span class="icon">✅</span><span>Multiple team members & client workspaces</span></li>
-          <li><span class="icon">✅</span><span>Advanced templates & white-label options</span></li>
-          <li><span class="icon">⏳</span><span>Launching after core system is stable</span></li>
-        </ul>
-
-        <div class="btn-row">
-          <button class="btn btn--outline-danger" type="button" disabled>
-            Join waitlist (soon)
-          </button>
-        </div>
-      </article>
-    </section>
-
-    <p class="footnote">
-      Prices may change for new customers in the future, but your early-access pricing will be locked
-      in as long as your subscription stays active. All amounts are shown in Japanese yen (¥) for
-      convenience.
-    </p>
-  </div>
 </body>
 </html>

@@ -1,247 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>XAI Websites – Create your website in seconds</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XAI Websites – AI Website Generator</title>
     <style>
+        :root {
+            --bg: #020617;
+            --panel: #030712;
+            --card: #020617;
+            --card-soft: #0b1020;
+            --border: #111827;
+            --accent: #22c55e;
+            --accent-soft: rgba(34,197,94,0.16);
+            --accent-blue: #38bdf8;
+            --text-soft: #9ca3af;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at top, #1e293b, #020617);
-            color: #e2e8f0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
+            color: #e5e7eb;
         }
 
-        .shell {
-            max-width: 1100px;
+        a { color: inherit; text-decoration: none; }
+
+        /* NAVBAR */
+        .nav {
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 26px 20px 40px;
-        }
-
-        header {
+            padding: 16px 20px 4px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 26px;
+            font-size: 14px;
         }
 
-        .logo {
+        .nav-left {
             display: flex;
-            gap: 8px;
             align-items: center;
-            font-weight: 700;
-        }
-        .logo-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: 9px;
-            background: linear-gradient(135deg,#22c55e,#2563eb);
-            display:flex;align-items:center;justify-content:center;
-            color:#0f172a;font-size:14px;
+            gap: 10px;
         }
 
-        .badge {
+        .logo-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 9px;
+            background: radial-gradient(circle at 30% 10%, #38bdf8, transparent 55%),
+                        radial-gradient(circle at 80% 70%, #22c55e, transparent 55%),
+                        #020617;
+            border: 1px solid #1f2937;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-link {
+            color: var(--text-soft);
+            font-size: 13px;
+        }
+
+        .nav-link:hover {
+            color: #e5e7eb;
+        }
+
+        .nav-pill {
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: #022c22;
+            color: #6ee7b7;
+        }
+
+        /* HERO + LAYOUT */
+        .wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 860px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hero-copy {
+            padding-right: 6px;
+        }
+
+        .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 5px 10px;
+            padding: 5px 9px;
             border-radius: 999px;
-            background: rgba(15,23,42,0.9);
-            border: 1px solid rgba(148,163,184,0.5);
+            background: rgba(15,23,42,0.8);
+            border: 1px solid #1f2937;
             font-size: 11px;
-            color:#e5e7eb;
-            text-decoration: none;
+            color: #a5b4fc;
+            margin-bottom: 10px;
         }
 
-        h1 {
-            margin: 10px 0 6px;
-            font-size: 32px;
-            font-weight: 650;
+        .dot-green {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #22c55e;
         }
 
-        .sub {
-            color: #94a3b8;
+        .hero h1 {
+            font-size: clamp(30px, 4vw, 38px);
+            margin: 4px 0 8px;
+        }
+
+        .hero-sub {
             font-size: 14px;
-            max-width: 540px;
+            color: var(--text-soft);
+            max-width: 440px;
         }
 
-        .layout {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 22px;
-            margin-top: 26px;
-        }
-        @media (max-width: 900px) {
-            .layout { grid-template-columns: 1fr; }
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+            font-size: 11px;
+            color: var(--text-soft);
         }
 
-        .card {
+        .hero-badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #1f2937;
             background: rgba(15,23,42,0.9);
-            padding: 20px;
-            border-radius: 18px;
-            border: 1px solid rgba(148,163,184,0.5);
-            box-shadow: 0 24px 70px rgba(0,0,0,0.7);
+        }
+
+        .hero-footer {
+            margin-top: 18px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .hero-footer strong {
+            color: #a5b4fc;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: linear-gradient(135deg, #020617, #020617);
+            border-radius: 20px;
+            padding: 20px 20px 18px;
+            border: 1px solid #111827;
+            box-shadow: 0 22px 50px rgba(15,23,42,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(56,189,248,0.35), transparent 60%);
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .form-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .form-sub {
+            font-size: 12px;
+            color: var(--text-soft);
+            margin-bottom: 14px;
+        }
+
+        .field-group {
+            margin-bottom: 10px;
         }
 
         label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 4px;
-            color: #cbd5f5;
+            color: #e5e7eb;
         }
-        input, select, textarea {
+
+        input[type="text"],
+        select,
+        textarea {
             width: 100%;
-            padding: 9px 11px;
-            border-radius: 10px;
-            border: 1px solid rgba(148,163,184,0.6);
-            background: rgba(15,23,42,0.8);
+            padding: 9px 10px;
+            border-radius: 8px;
+            border: 1px solid #1f2937;
+            background: #020617;
             color: #e5e7eb;
             font-size: 13px;
             outline: none;
         }
-        input:focus, select:focus, textarea:focus {
-            border-color: #4f46e5;
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
         }
-        textarea { min-height: 70px; resize: vertical; }
 
-        .field { margin-bottom: 12px; }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
 
-        .btn-main {
-            margin-top: 10px;
+        .hint {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .inline-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 520px) {
+            .inline-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-soft);
+        }
+
+        .checkbox-row input {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-primary {
             width: 100%;
-            padding: 12px;
             border-radius: 999px;
+            padding: 11px 16px;
             border: none;
-            cursor: pointer;
-            background: linear-gradient(135deg,#2563eb,#22c55e);
-            color: white;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #22c55e, #38bdf8);
+            color: #020617;
             font-weight: 600;
             font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 14px 30px rgba(56,189,248,0.45);
+            transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
         }
 
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.9);
-            border: 1px solid rgba(148,163,184,0.4);
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 40px rgba(56,189,248,0.55);
+        }
+
+        .form-note {
+            margin-top: 8px;
             font-size: 11px;
             color: #9ca3af;
-            margin-top: 8px;
+            text-align: center;
         }
 
-        .small {
+        .form-note strong {
+            color: #a5b4fc;
+        }
+
+        /* RIGHT INFO PANEL */
+        .info-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 20px;
+            padding: 18px 18px 18px;
+            border: 1px solid #111827;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.8);
+        }
+
+        .info-heading {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .info-list li {
+            display: flex;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .info-bullet {
+            color: #4ade80;
+            margin-top: 1px;
+        }
+
+        .pricing-teaser {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid #1f2937;
             font-size: 12px;
-            color: #9ca3af;
         }
 
-        .right h2 { margin-top: 0; font-size: 17px; margin-bottom: 8px; }
-        .right ul { font-size: 13px; color: #cbd5f5; padding-left: 18px; }
+        .pricing-teaser strong {
+            color: #bbf7d0;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid #1f2937;
+            font-size: 13px;
+            color: #e5e7eb;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-blue);
+            color: #bae6fd;
+        }
+
+        .small-muted {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body>
 
-<div class="shell">
-
-    <header>
-        <div class="logo">
-            <div class="logo-badge">XA</div>
-            <div>XAI Websites</div>
+    <!-- NAVBAR -->
+    <header class="nav">
+        <div class="nav-left">
+            <div class="logo-mark"></div>
+            <div class="logo-text">XAI Websites</div>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-            <a class="badge" href="{{ url_for('pricing') }}">
-                💳 Pricing
-            </a>
-            <div class="badge">
-                🚀 Early access · AI website generator
-            </div>
-        </div>
+        <nav class="nav-links">
+            <a href="/pricing" class="nav-link">Pricing</a>
+            <span class="nav-pill">Early access · Founders ¥9.90</span>
+        </nav>
     </header>
 
-    <main>
-        <div>
-            <h1>Create your website in seconds</h1>
-            <p class="sub">
-                Tell us a few details about your business. Our AI will generate a full multi-page website
-                (Home, About, Services, Contact, and optional Store) tailored to your industry and city.
-            </p>
-        </div>
+    <!-- MAIN WRAPPER -->
+    <main class="wrapper">
+        <section class="hero">
 
-        <div class="layout">
+            <!-- LEFT: HERO + COPY -->
+            <div class="hero-copy">
+                <div class="eyebrow">
+                    <span class="dot-green"></span> AI website generator · No coding, no templates
+                </div>
+                <h1>Create your business website in under 30 seconds</h1>
+                <p class="hero-sub">
+                    Tell the AI a few details about your business. We’ll generate a full multi-page site:
+                    <strong>Home, About, Services, Contact</strong> and optional <strong>Store</strong>, ready to host anywhere.
+                </p>
 
-            <!-- LEFT: FORM -->
-            <div class="card">
-                <form method="post" action="{{ url_for('generate') }}">
+                <div class="hero-badges">
+                    <div class="hero-badge">⚡ Time to first website: <strong>~30 seconds</strong></div>
+                    <div class="hero-badge">📱 Mobile-friendly HTML</div>
+                    <div class="hero-badge">🌎 Works for any niche & country</div>
+                </div>
 
-                    <div class="field">
-                        <label>Business name</label>
-                        <input name="business" placeholder="e.g. Kobe Sushi House" required>
-                    </div>
-
-                    <div class="field">
-                        <label>Industry / Category</label>
-                        <select name="category" required>
-                            <option value="">Choose category…</option>
-                            <option value="restaurant">Restaurant / Café</option>
-                            <option value="salon">Salon / Beauty</option>
-                            <option value="clinic">Clinic / Healthcare</option>
-                            <option value="electrician">Electrician / Trades</option>
-                            <option value="roofer">Roofer / Construction</option>
-                            <option value="ecommerce">Online store (e-commerce)</option>
-                            <option value="other">Other / Custom</option>
-                        </select>
-                    </div>
-
-                    <div class="field">
-                        <label>City / Area</label>
-                        <input name="city" placeholder="e.g. Kobe, Osaka, Tokyo" required>
-                    </div>
-
-                    <div class="field">
-                        <label>Short description</label>
-                        <textarea name="description" placeholder="Tell AI what makes this business special, services, style, target customers…"></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label>Products (only if e-commerce)</label>
-                        <textarea name="product_name[]"
-                                  placeholder="Optional. Future versions will support full product lists. For now we generate a standard store layout."></textarea>
-                    </div>
-
-                    <button class="btn-main" type="submit">
-                        ⚡ Generate my website
-                    </button>
-
-                    <div class="small" style="margin-top:10px;">
-                        Under 30 seconds · Downloadable HTML ZIP · Multi-page (Home, About, Services, Contact, Store).
-                    </div>
-                </form>
-            </div>
-
-            <!-- RIGHT: INFO -->
-            <div class="card right">
-                <h2>Built for small business owners</h2>
-                <ul>
-                    <li>Clean, responsive layout that works great on phones.</li>
-                    <li>AI-written copy tailored to your business and city.</li>
-                    <li>Multi-page site: Home, About, Services, Contact, plus Store for e-commerce.</li>
-                    <li>Ready to host on any provider — just upload the files.</li>
-                    <li>Pro plan unlocks full ZIP download and 1-click live publishing.</li>
-                </ul>
-
-                <div class="pill">
-                    ⏱ Time to first website: <strong>30 seconds</strong>
+                <div class="hero-footer">
+                    Start on <strong>Free</strong>. Upgrade to <strong>Pro</strong> only when you need downloads and
+                    1-click subdomain publishing.
                 </div>
             </div>
 
+            <!-- RIGHT: FORM CARD -->
+            <div class="form-card">
+                <div class="form-inner">
+                    <div class="form-title">Step 1 · Business details</div>
+                    <div class="form-sub">Fill this once. Our AI will generate your full site layout, copy and structure.</div>
+
+                    <form action="/generate" method="POST">
+                        <div class="field-group">
+                            <label for="business_name">Business name</label>
+                            <input type="text" id="business_name" name="business_name" placeholder="e.g. Kobe Sushi House" required />
+                        </div>
+
+                        <div class="inline-row">
+                            <div class="field-group">
+                                <label for="industry">Industry / category</label>
+                                <select id="industry" name="industry" required>
+                                    <option value="">Select industry</option>
+                                    <option>Restaurant / Café</option>
+                                    <option>Salon / Beauty</option>
+                                    <option>Electrician / Home services</option>
+                                    <option>Roofer / Construction</option>
+                                    <option>Clinic / Dental</option>
+                                    <option>Auto repair / Car services</option>
+                                    <option>Online store / e-commerce</option>
+                                    <option>Other local business</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="city">City / area</label>
+                                <input type="text" id="city" name="city" placeholder="e.g. Kobe, Osaka, Tokyo" required />
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="description">Short description</label>
+                            <textarea id="description" name="description" placeholder="Tell AI what makes this business special, services, style, target customers..."></textarea>
+                            <div class="hint">Example: “Family-owned sushi restaurant focused on fresh local fish and cozy date nights.”</div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="products">Products (optional, only if e-commerce)</label>
+                            <textarea id="products" name="products" placeholder="Example: Sushi set – ¥1800; Party platter – ¥6800; Vegan menu – ¥1500;"></textarea>
+                            <div class="hint">You can leave this empty for now. We’ll still create a basic store page.</div>
+                        </div>
+
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="is_ecommerce" name="is_ecommerce" value="yes" />
+                            <label for="is_ecommerce" style="margin:0;">This business needs an online store (product pages & store section).</label>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            ⚡ Generate my website
+                        </button>
+
+                        <div class="form-note">
+                            Free plan: <strong>unlimited previews</strong> in the browser.  
+                            Pro unlocks: HTML ZIP download & <strong>1-click subdomain publishing</strong>.
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT INFO PANEL (MOBILE BELOW) -->
+        <section class="info-card" style="margin-top:24px;">
+            <div class="info-heading">What you get for each generation</div>
+            <ul class="info-list">
+                <li><span class="info-bullet">✔</span> Home page with hero, highlights, and strong call to action.</li>
+                <li><span class="info-bullet">✔</span> About page with story, mission, values and team (AI generated).</li>
+                <li><span class="info-bullet">✔</span> Services page with 3–6 offers, benefits and pricing suggestions.</li>
+                <li><span class="info-bullet">✔</span> Contact page with form, business info and map placeholder.</li>
+                <li><span class="info-bullet">✔</span> Optional store + product pages if you enable e-commerce.</li>
+            </ul>
+
+            <div class="pricing-teaser">
+                <strong>Pro plan – ¥9.90 / month (founders)</strong><br />
+                Download full HTML ZIP for every site, and publish live on <strong>yourname.xaiwebsites.com</strong> with one click.
+                You only need 1 paying client to cover the subscription.
+                <br/>
+                <a href="/pricing" class="btn-outline">View full pricing →</a>
+            </div>
+
+            <div class="small-muted">
+                Built for freelancers, agencies and small business owners who want to launch sites quickly without hiring a designer.
+            </div>
+        </section>
+
+        <div class="footer">
+            © 2025 XAI Websites · Powered by XAI Agent
         </div>
     </main>
-
-</div>
-
 </body>
 </html>
